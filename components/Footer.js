@@ -11,7 +11,7 @@ export default function Footer() {
           <div className="space-y-6">
             <div className="flex items-center space-x-3">
               <div className="flex items-center space-x-3">
-                <img src="/ratrova-logo-v3.jpg" alt="Ratrova Creative Labs" className="w-16 h-16 object-contain rounded-full border-2 border-ratrova-gold shadow-[0_0_10px_rgba(175,140,92,0.3)]" />
+                <img src="/ratrova-logo-v3.jpg" alt="RATROVA" className="w-16 h-16 object-contain rounded-full border-2 border-ratrova-gold shadow-[0_0_10px_rgba(175,140,92,0.3)]" />
               </div>
             </div>
             <p className="font-cormorant italic text-ratrova-beige text-lg leading-relaxed">
@@ -135,7 +135,7 @@ export default function Footer() {
             </div>
 
             <p className="text-ratrova-beige text-sm">
-              © {currentYear} RATROVA Creative Labs. All rights reserved.
+              © {currentYear} RATROVA. All rights reserved.
             </p>
           </div>
         </div>

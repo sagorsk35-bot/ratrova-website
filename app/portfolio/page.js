@@ -66,8 +66,8 @@ export default function Portfolio() {
                 Portfolio <span className="text-ratrova-gold">Coming Soon</span>
               </h2>
               <p className="text-lg text-ratrova-charcoal leading-relaxed mb-6">
-                We're currently curating our case studies and project showcases. As RATROVA Creative Labs 
-                actively serves clients in Q1 2025, we'll be updating this portfolio with real work, 
+                We're currently curating our case studies and project showcases. As RATROVA
+                actively serves clients in Q1 2025, we'll be updating this portfolio with real work,
                 detailed process breakdowns, and measurable results.
               </p>
               <p className="text-ratrova-gold font-semibold text-xl mb-8">
@@ -191,7 +191,7 @@ export default function Portfolio() {
 
             <div className="card-luxury bg-ratrova-charcoal/50 border-ratrova-gold/30">
               <p className="font-cormorant italic text-2xl text-ratrova-beige leading-relaxed mb-6">
-                "This space will showcase testimonials from satisfied clients who've experienced 
+                "This space will showcase testimonials from satisfied clients who've experienced
                 the RATROVA difference – from rapid delivery to premium quality to strategic impact."
               </p>
               <p className="text-ratrova-gold">

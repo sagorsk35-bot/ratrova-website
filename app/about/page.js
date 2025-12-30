@@ -25,7 +25,7 @@ export default function About() {
 
             <div className="space-y-6 text-lg text-ratrova-charcoal leading-relaxed">
               <p>
-                RATROVA Creative Labs was born from a simple yet powerful belief: <strong className="text-ratrova-gold">exceptional design shouldn't require sacrificing family, heritage, or homeland.</strong>
+                RATROVA was born from a simple yet powerful belief: <strong className="text-ratrova-gold">exceptional design shouldn't require sacrificing family, heritage, or homeland.</strong>
               </p>
 
               <p>
@@ -38,7 +38,7 @@ export default function About() {
               </p>
 
               <p>
-                RATROVA Creative Labs is Bangladesh's <strong className="text-ratrova-gold">first luxury packaging design agency</strong> –
+                RATROVA is Bangladesh's <strong className="text-ratrova-gold">first luxury packaging design agency</strong> –
                 not because we wanted a title, but because we wanted to prove that international-standard work,
                 premium client experiences, and meaningful careers can thrive right here in Dhaka.
               </p>
@@ -76,7 +76,7 @@ export default function About() {
                 Our Vision
               </h3>
               <p className="text-ratrova-charcoal leading-relaxed text-lg">
-                Build a comprehensive design ecosystem spanning five wings: Creative Labs (active now),
+                Build a comprehensive design ecosystem spanning five wings: Creative Studio (active now),
                 Packaging & Manufacturing (2026), AI Studio (2027), Design University (2028),
                 and Freelancer Platform (2029). Each wing empowers local talent while serving global standards.
               </p>

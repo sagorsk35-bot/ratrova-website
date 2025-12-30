@@ -3,7 +3,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 
 export const metadata = {
-  title: 'RATROVA Creative Labs | Bangladesh\'s First Luxury Packaging Design Agency',
+  title: 'RATROVA | Bangladesh\'s First Luxury Packaging Design Agency',
   description: 'Before form, there is meaning. Before beauty, there is belief. RATROVA is Bangladesh\'s premier luxury packaging design agency.',
   keywords: 'packaging design bangladesh, luxury branding dhaka, brand identity, ratrova',
 }

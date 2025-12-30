@@ -185,7 +185,7 @@ export default function Contact() {
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     className="input-luxury"
-                    placeholder="+880 XXX XXX XXXX"
+                    placeholder="09639990099"
                   />
                 </div>
 
@@ -279,7 +279,7 @@ export default function Contact() {
                 Bangladesh
               </p>
               <p className="text-sm text-ratrova-beige/70 mt-4">
-                Creative Labs & Client Consultations
+                Creative Studio & Client Consultations
               </p>
             </div>
 
