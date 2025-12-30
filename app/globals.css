@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-ratrova-white text-ratrova-black font-inter antialiased;
+  }
+}
+
+@layer components {
+  .luxury-container {
+    @apply max-w-7xl mx-auto px-6 lg:px-8;
+  }
+
+  .heading-luxury {
+    @apply font-cormorant font-bold text-ratrova-black;
+  }
+
+  .text-gold-gradient {
+    @apply bg-gradient-to-r from-ratrova-gold via-ratrova-accent to-ratrova-gold bg-clip-text text-transparent;
+  }
+
+  .btn-primary {
+    @apply bg-ratrova-gold text-ratrova-white px-8 py-4 rounded-none font-inter font-medium tracking-wider uppercase transition-all duration-300 hover:bg-ratrova-accent hover:scale-105 hover:shadow-2xl shadow-lg;
+  }
+
+  .btn-secondary {
+    @apply border-2 border-ratrova-gold text-ratrova-gold px-8 py-4 rounded-none font-inter font-medium tracking-wider uppercase transition-all duration-300 hover:bg-ratrova-gold hover:text-ratrova-white hover:shadow-xl;
+  }
+
+  .card-luxury {
+    @apply bg-ratrova-white border-2 border-ratrova-beige p-8 transition-all duration-500 hover:shadow-2xl hover:border-ratrova-gold hover:-translate-y-1;
+  }
+
+  .section-padding {
+    @apply py-20 lg:py-32;
+  }
+
+  .gold-divider {
+    @apply w-24 h-0.5 bg-gradient-to-r from-transparent via-ratrova-gold to-transparent mx-auto my-8;
+  }
+
+  .input-luxury {
+    @apply w-full bg-ratrova-white border-b-2 border-ratrova-beige px-4 py-3 font-inter text-ratrova-black placeholder-ratrova-charcoal/50 focus:border-ratrova-gold focus:outline-none transition-colors duration-300;
+  }
+
+  .checkbox-luxury {
+    @apply w-5 h-5 border-2 border-ratrova-gold text-ratrova-gold focus:ring-ratrova-gold focus:ring-offset-0 rounded-none;
+  }
+
+  /* Enhanced color usage */
+  .accent-border {
+    @apply border-l-4 border-ratrova-accent pl-6;
+  }
+
+  .beige-section {
+    @apply bg-gradient-to-br from-ratrova-beige/30 to-ratrova-white;
+  }
+
+  .charcoal-text {
+    @apply text-ratrova-charcoal/90;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animate-delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .animate-delay-600 {
+    animation-delay: 600ms;
+  }
+
+  .animate-luxury-pulse {
+    animation: luxury-pulse 8s ease-in-out infinite;
+  }
+
+  .animate-luxury-drift {
+    animation: luxury-drift 30s linear infinite alternate;
+  }
+}
+
+@keyframes luxury-pulse {
+
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes luxury-drift {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  100% {
+    transform: translate(-30px, -15px);
+  }
+}
+
+/* Custom Scrollbar with brand colors */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #E7E2DD;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #AF8C5C 0%, #C9A961 100%);
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #C9A961 0%, #AF8C5C 100%);
+}
+
+/* Selection Color */
+::selection {
+  background: #AF8C5C;
+  color: #E7E2DD;
+}
+
+::-moz-selection {
+  background: #AF8C5C;
+  color: #E7E2DD;
+}
+
+/* Smooth transitions for all elements */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
