@@ -3,6 +3,13 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs'
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -66,6 +73,24 @@ export default function Header() {
             <Link href="/survey" className="btn-primary">
               Start Survey
             </Link>
+
+            {/* Clerk Authentication */}
+            <SignedOut>
+              <SignInButton mode="modal">
+                <button className="font-inter font-medium text-sm tracking-wider uppercase text-ratrova-white hover:text-ratrova-gold transition-colors duration-300">
+                  Sign In
+                </button>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton
+                appearance={{
+                  elements: {
+                    avatarBox: "w-10 h-10 border-2 border-ratrova-gold/50 hover:border-ratrova-gold transition-colors"
+                  }
+                }}
+              />
+            </SignedIn>
           </div>
 
           {/* Mobile Menu Button */}
@@ -123,6 +148,27 @@ export default function Header() {
               >
                 Start Survey
               </Link>
+
+              {/* Mobile Clerk Authentication */}
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <button className="font-inter font-medium text-sm tracking-wider uppercase text-ratrova-white hover:text-ratrova-gold transition-colors duration-300 py-2 text-left">
+                    Sign In
+                  </button>
+                </SignInButton>
+              </SignedOut>
+              <SignedIn>
+                <div className="flex items-center space-x-3 py-2">
+                  <UserButton
+                    appearance={{
+                      elements: {
+                        avatarBox: "w-10 h-10 border-2 border-ratrova-gold/50"
+                      }
+                    }}
+                  />
+                  <span className="text-ratrova-white font-inter text-sm">Account</span>
+                </div>
+              </SignedIn>
             </div>
           </div>
         )}
