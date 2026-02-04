@@ -9,7 +9,7 @@ module.exports = {
     extend: {
       colors: {
         'ratrova': {
-          'black': '#1A1613',
+          'black': '#000000',
           'charcoal': '#474440',
           'gold': '#AF8C5C',
           'beige': '#D1C7BD',

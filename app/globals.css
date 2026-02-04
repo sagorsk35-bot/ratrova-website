@@ -93,6 +93,29 @@
   .animate-luxury-drift {
     animation: luxury-drift 30s linear infinite alternate;
   }
+
+  .animate-dots-slow {
+    animation: dots-float 20s ease-in-out infinite alternate;
+  }
+
+  .animate-dots-fast {
+    animation: dots-float 12s ease-in-out infinite alternate-reverse;
+  }
+}
+
+@keyframes dots-float {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.1;
+  }
+  50% {
+    transform: translate(20px, 10px) scale(1.1);
+    opacity: 0.25;
+  }
+  100% {
+    transform: translate(-10px, 20px) scale(1);
+    opacity: 0.15;
+  }
 }
 
 @keyframes luxury-pulse {

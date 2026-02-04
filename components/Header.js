@@ -11,12 +11,33 @@ import {
   UserButton,
 } from '@clerk/nextjs'
 
+import { supabase } from '@/lib/supabase'
+
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [dbStatus, setDbStatus] = useState('checking')
   const pathname = usePathname()
 
   useEffect(() => {
+    const checkConnection = async () => {
+      try {
+        const { data, error } = await supabase.from('_health').select('*').limit(1)
+        if (error && error.code === 'PGRST116') {
+          // This error means the table doesn't exist, which is fine, it means we connected
+          setDbStatus('connected')
+        } else if (error) {
+          setDbStatus('disconnected')
+        } else {
+          setDbStatus('connected')
+        }
+      } catch (err) {
+        setDbStatus('disconnected')
+      }
+    }
+
+    checkConnection()
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)
     }
@@ -42,16 +63,23 @@ export default function Header() {
       <nav className="luxury-container">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group">
-            {/* <div className="relative w-12 h-12 bg-gradient-to-br from-ratrova-gold to-ratrova-accent rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-              <span className="font-cormorant font-bold text-2xl text-ratrova-white">R</span>
-              <div className="absolute inset-0 rounded-full border-2 border-ratrova-beige/30 group-hover:border-ratrova-beige/60 transition-colors"></div>
-            </div> */}
-            <img src="/ratrova-logo-v3.jpg" alt="Ratrova Logo" className="w-20 h-20 object-contain rounded-full group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(175,140,92,0.4)]" />
-            <span className="font-cormorant font-bold text-2xl text-ratrova-white tracking-wider">
-              RATROVA
-            </span>
-          </Link>
+          <div className="flex items-center space-x-4">
+            <Link href="/" className="flex items-center space-x-3 group">
+              <img src="/ratrova-logo-v3.jpg" alt="Ratrova Logo" className="w-20 h-20 object-contain rounded-full group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(175,140,92,0.4)]" />
+              <span className="font-cormorant font-bold text-2xl text-ratrova-white tracking-wider">
+                RATROVA
+              </span>
+            </Link>
+
+            {/* DB Status Indicator */}
+            <div className="flex items-center space-x-1 px-2 py-1 rounded-full bg-ratrova-black/50 border border-ratrova-gold/10">
+              <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${dbStatus === 'connected' ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' :
+                  dbStatus === 'checking' ? 'bg-ratrova-gold shadow-[0_0_8px_rgba(175,140,92,0.6)]' :
+                    'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]'
+                }`}></div>
+              <span className="text-[10px] font-inter text-ratrova-beige/60 uppercase tracking-tighter">DB</span>
+            </div>
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">

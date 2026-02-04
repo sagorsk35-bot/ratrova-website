@@ -11,7 +11,7 @@ export default function Footer() {
           <div className="space-y-6">
             <div className="flex items-center space-x-3">
               <div className="flex items-center space-x-3">
-                <img src="/ratrova-logo-v3.jpg" alt="RATROVA" className="w-16 h-16 object-contain rounded-full border-2 border-ratrova-gold shadow-[0_0_10px_rgba(175,140,92,0.3)]" />
+                <img src="/ratrova-logo-v3.jpg" alt="RATROVA" className="w-12 h-12 object-contain rounded-full border-2 border-ratrova-gold" />
               </div>
             </div>
             <p className="font-cormorant italic text-ratrova-beige text-lg leading-relaxed">

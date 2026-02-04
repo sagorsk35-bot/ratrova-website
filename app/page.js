@@ -15,17 +15,17 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center bg-ratrova-black overflow-hidden">
         {/* Background Pattern */}
-        {/* Background Pattern - Layer 1 (Breathing) */}
-        <div className="absolute inset-0 animate-luxury-pulse">
+        {/* Background Pattern - Layer 1 (Primary Dots) */}
+        <div className="absolute inset-0 animate-dots-slow">
           <div className="absolute inset-0" style={{
             backgroundImage: `radial-gradient(circle at 1px 1px, #AF8C5C 1px, transparent 0)`,
             backgroundSize: '40px 40px'
           }}></div>
         </div>
 
-        {/* Background Pattern - Layer 2 (Drifting Deep) */}
-        <div className="absolute inset-0 opacity-10 animate-luxury-drift">
-          <div className="absolute inset-0" style={{
+        {/* Background Pattern - Layer 2 (Secondary Floating Dots) */}
+        <div className="absolute inset-0 animate-dots-fast">
+          <div className="absolute inset-0 opacity-10" style={{
             backgroundImage: `radial-gradient(circle at 1px 1px, #AF8C5C 0.5px, transparent 0)`,
             backgroundSize: '60px 60px',
             backgroundPosition: '15px 15px'
