@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useUser } from '@clerk/nextjs'
+import { submitSurvey } from '@/lib/survey-action'
 
 export default function Survey() {
   const { user, isLoaded } = useUser()
@@ -75,11 +76,36 @@ export default function Survey() {
     }))
   }
 
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState(null)
+
   const handleSubmit = async (e) => {
     e.preventDefault()
-    // Here you would typically send data to your backend
-    console.log('Survey Data:', formData)
-    setIsSubmitted(true)
+    setIsSubmitting(true)
+    setSubmitError(null)
+
+    try {
+      // Include user ID if logged in
+      const dataToSubmit = {
+        ...formData,
+        userId: user?.id || null
+      }
+
+      const result = await submitSurvey(dataToSubmit)
+
+      if (result.success) {
+        console.log('✅ Survey submitted:', result)
+        setIsSubmitted(true)
+      } else {
+        console.error('❌ Survey error:', result.error)
+        setSubmitError(result.error || 'Failed to submit survey')
+      }
+    } catch (error) {
+      console.error('Survey submission failed:', error)
+      setSubmitError('An unexpected error occurred. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const nextStep = () => setStep(step + 1)
@@ -510,19 +536,35 @@ export default function Survey() {
                   ))}
                 </div>
 
+                {/* Error Message */}
+                {submitError && (
+                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                    <p className="text-sm">{submitError}</p>
+                  </div>
+                )}
+
                 <div className="flex gap-4">
                   <button
                     type="button"
                     onClick={prevStep}
                     className="btn-secondary flex-1"
+                    disabled={isSubmitting}
                   >
                     Back
                   </button>
                   <button
                     type="submit"
-                    className="btn-primary flex-1"
+                    disabled={isSubmitting}
+                    className="btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
-                    Submit Survey
+                    {isSubmitting ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        Submitting...
+                      </>
+                    ) : (
+                      'Submit Survey'
+                    )}
                   </button>
                 </div>
               </div>
