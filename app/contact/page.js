@@ -1,348 +1,211 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
+
+// Inline SVG Icons
+const MessageIcon = () => (
+  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+  </svg>
+)
+
+const BuildingIcon = () => (
+  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+  </svg>
+)
+
+const FactoryIcon = () => (
+  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+  </svg>
+)
+
+const CalendarIcon = () => (
+  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+  </svg>
+)
+
+const PhoneIcon = () => (
+  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+  </svg>
+)
+
+const ArrowRightIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+  </svg>
+)
 
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: '',
-    projectType: ''
+  const whatsappUrl = 'https://wa.me/8801611616861?text=I%20want%20to%20join%20Vision%202030%20Inner%20Circle'
+
+  const calendarDays = Array.from({ length: 14 }, (_, i) => {
+    const date = new Date()
+    date.setDate(date.getDate() + i + 1)
+    return {
+      day: date.getDate(),
+      dayName: date.toLocaleDateString('en-US', { weekday: 'short' }),
+      month: date.toLocaleDateString('en-US', { month: 'short' }),
+      isAvailable: i % 2 === 0 || i % 3 === 0
+    }
   })
-  const [isSubmitted, setIsSubmitted] = useState(false)
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    // Here you would typically send to backend
-    console.log('Contact Form:', formData)
-    setIsSubmitted(true)
-  }
-
-  if (isSubmitted) {
-    return (
-      <div className="min-h-screen bg-ratrova-white flex items-center justify-center py-20">
-        <div className="luxury-container">
-          <div className="max-w-2xl mx-auto text-center">
-            <div className="w-20 h-20 bg-ratrova-gold rounded-full flex items-center justify-center mx-auto mb-8">
-              <svg className="w-12 h-12 text-ratrova-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <h1 className="heading-luxury text-4xl md:text-5xl mb-6">
-              Message Received!
-            </h1>
-            <div className="gold-divider"></div>
-            <p className="text-xl text-ratrova-charcoal mb-8">
-              Thank you for reaching out. We'll contact you with a suggestion within 24 hours.
-            </p>
-            <Link href="/" className="btn-primary inline-block">
-              Back to Home
-            </Link>
-          </div>
-        </div>
-      </div>
-    )
+  const handleDateClick = (isAvailable) => {
+    if (isAvailable) {
+      window.open(whatsappUrl, '_blank')
+    }
   }
 
   return (
-    <div className="bg-ratrova-white">
+    <div className="min-h-screen" style={{ backgroundColor: '#050505' }}>
+
       {/* Hero Section */}
-      <section className="section-padding bg-ratrova-black text-ratrova-white">
-        <div className="luxury-container text-center">
-          <h1 className="font-cormorant font-bold text-5xl md:text-6xl lg:text-7xl mb-6">
-            Get In <span className="text-ratrova-gold">Touch</span>
+      <section className="pt-32 pb-12" style={{ backgroundColor: '#050505' }}>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="w-20 h-[2px] mx-auto mb-8" style={{ backgroundColor: '#D4AF37' }}></div>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6" style={{ fontFamily: 'Inter, sans-serif', color: '#FFFFFF' }}>
+            Let's Build <span style={{ color: '#D4AF37' }}>Together.</span>
           </h1>
-          <div className="gold-divider"></div>
-          <p className="text-xl md:text-2xl text-ratrova-beige max-w-4xl mx-auto leading-relaxed">
-            Let's discuss how we can elevate your brand together
+          <p className="text-xl" style={{ color: '#888888' }}>
+            Book your free consultation with Sheikh Mohammad Sagor.
           </p>
         </div>
       </section>
 
-      {/* Contact Methods */}
-      <section className="section-padding">
-        <div className="luxury-container">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-            {/* Phone */}
-            <div className="card-luxury text-center group hover:border-ratrova-gold">
-              <div className="w-16 h-16 bg-ratrova-gold rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-8 h-8 text-ratrova-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-              </div>
-              <h3 className="heading-luxury text-2xl mb-4 text-ratrova-gold">
-                Call Us
-              </h3>
-              <a href="tel:09639990099" className="text-ratrova-charcoal hover:text-ratrova-gold transition-colors block mb-2">
-                09639990099
-              </a>
-              <p className="text-sm text-ratrova-charcoal/70 mt-4">
-                Mon-Sat: 10 AM - 8 PM
-              </p>
-            </div>
+      {/* Contact Cards */}
+      <section className="py-16" style={{ backgroundColor: '#0A0A0A' }}>
+        <div className you="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-            {/* Email */}
-            <div className="card-luxury text-center group hover:border-ratrova-gold">
-              <div className="w-16 h-16 bg-ratrova-gold rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-8 h-8 text-ratrova-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
+            {/* WhatsApp Direct - PRIMARY CTA */}
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-8 text-center transition-all duration-300 hover:scale-105 block"
+              style={{ backgroundColor: '#0F0F0F', border: '2px solid #006A4E' }}
+            >
+              <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center rounded-full" style={{ backgroundColor: 'rgba(0, 106, 78, 0.2)' }}>
+                <span style={{ color: '#006A4E' }}><MessageIcon /></span>
               </div>
-              <h3 className="heading-luxury text-2xl mb-4 text-ratrova-gold">
-                Email Us
-              </h3>
-              <div className="space-y-2">
-                <a href="mailto:hello@ratrova.com" className="text-ratrova-charcoal hover:text-ratrova-gold transition-colors block">
-                  hello@ratrova.com
-                </a>
-                <a href="mailto:creative@ratrova.com" className="text-ratrova-charcoal hover:text-ratrova-gold transition-colors block">
-                  creative@ratrova.com
-                </a>
-                <a href="mailto:production@ratrova.com" className="text-ratrova-charcoal hover:text-ratrova-gold transition-colors block">
-                  production@ratrova.com
-                </a>
-              </div>
-            </div>
-
-            {/* WhatsApp */}
-            <div className="card-luxury text-center group hover:border-ratrova-gold">
-              <div className="w-16 h-16 bg-ratrova-gold rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                <svg className="w-8 h-8 text-ratrova-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
-                </svg>
-              </div>
-              <h3 className="heading-luxury text-2xl mb-4 text-ratrova-gold">
-                WhatsApp
-              </h3>
-              <a
-                href="https://wa.me/8809639990099"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-ratrova-charcoal hover:text-ratrova-gold transition-colors block"
+              <h3 className="text-xl font-bold mb-2" style={{ color: '#FFFFFF' }}>Message on WhatsApp</h3>
+              <p className="text-lg font-bold mb-4" style={{ color: '#006A4E' }}>+880 1611-616861</p>
+              <span
+                className="inline-flex items-center gap-2 px-6 py-3 font-bold uppercase tracking-wide text-sm"
+                style={{ backgroundColor: '#006A4E', color: '#FFFFFF' }}
               >
-                09639990099
-              </a>
-              <p className="text-sm text-ratrova-charcoal/70 mt-4">
-                Instant messaging available
-              </p>
-            </div>
-          </div>
+                Chat Now
+                <ArrowRightIcon />
+              </span>
+            </a>
 
-          {/* Contact Form */}
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="heading-luxury text-4xl md:text-5xl mb-6">
-                Send Us a <span className="text-gold-gradient">Message</span>
-              </h2>
-              <div className="gold-divider"></div>
-              <p className="text-lg text-ratrova-charcoal">
-                Fill out the form below and we'll contact you with a suggestion
-              </p>
+            {/* Corporate Office */}
+            <div className="p-8 text-center" style={{ backgroundColor: '#0F0F0F', border: '1px solid #D4AF37' }}>
+              <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center rounded-full" style={{ backgroundColor: 'rgba(212, 175, 55, 0.1)' }}>
+                <span style={{ color: '#D4AF37' }}><BuildingIcon /></span>
+              </div>
+              <h3 className="text-xl font-bold mb-2" style={{ color: '#FFFFFF' }}>Corporate Office</h3>
+              <p className="text-sm mb-2" style={{ color: '#888888' }}>Dhaka, Bangladesh</p>
+              <p className="text-xs" style={{ color: '#666666' }}>(Full address shared after booking)</p>
             </div>
 
-            <form onSubmit={handleSubmit} className="card-luxury">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div>
-                  <label className="block text-sm font-semibold text-ratrova-charcoal mb-2">
-                    Your Name *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="input-luxury"
-                    placeholder="Full name"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-ratrova-charcoal mb-2">
-                    Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="input-luxury"
-                    placeholder="your@email.com"
-                  />
-                </div>
+            {/* Production Factory */}
+            <div className="p-8 text-center" style={{ backgroundColor: '#0F0F0F', border: '1px solid #222222' }}>
+              <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center rounded-full" style={{ backgroundColor: 'rgba(0, 106, 78, 0.1)' }}>
+                <span style={{ color: '#006A4E' }}><FactoryIcon /></span>
               </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div>
-                  <label className="block text-sm font-semibold text-ratrova-charcoal mb-2">
-                    Phone Number *
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="input-luxury"
-                    placeholder="09639990099"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-ratrova-charcoal mb-2">
-                    Project Type
-                  </label>
-                  <select
-                    value={formData.projectType}
-                    onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
-                    className="input-luxury"
-                  >
-                    <option value="">Select project type</option>
-                    <option value="express">Express Service (48-72hr)</option>
-                    <option value="premium">Premium Brand Project</option>
-                    <option value="consultation">Brand Consultation</option>
-                    <option value="other">Other Inquiry</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="mb-6">
-                <label className="block text-sm font-semibold text-ratrova-charcoal mb-2">
-                  Subject *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.subject}
-                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                  className="input-luxury"
-                  placeholder="Brief subject of your inquiry"
-                />
-              </div>
-
-              <div className="mb-8">
-                <label className="block text-sm font-semibold text-ratrova-charcoal mb-2">
-                  Message *
-                </label>
-                <textarea
-                  required
-                  rows="6"
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="input-luxury"
-                  placeholder="Tell us about your packaging challenge or project needs..."
-                ></textarea>
-              </div>
-
-              <button type="submit" className="btn-primary w-full">
-                Send Message
-              </button>
-
-              <p className="text-sm text-ratrova-charcoal/70 text-center mt-6">
-                Prefer to take our detailed survey? <Link href="/survey" className="text-ratrova-gold hover:underline">Click here</Link>
-              </p>
-            </form>
+              <h3 className="text-xl font-bold mb-2" style={{ color: '#FFFFFF' }}>Gazipur Factory</h3>
+              <p className="text-sm mb-2" style={{ color: '#888888' }}>Production & Packaging Hub</p>
+              <p className="text-xs" style={{ color: '#666666' }}>(Tours available by appointment)</p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Locations */}
-      <section className="section-padding bg-ratrova-black text-ratrova-white">
-        <div className="luxury-container">
-          <div className="text-center mb-16">
-            <h2 className="font-cormorant font-bold text-4xl md:text-5xl mb-6">
-              Our <span className="text-ratrova-gold">Locations</span>
+      {/* Calendar Booking - Redirects to WhatsApp */}
+      <section className="py-16" style={{ backgroundColor: '#050505' }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: '#FFFFFF' }}>
+              Check <span style={{ color: '#D4AF37' }}>Availability</span>
             </h2>
-            <div className="gold-divider"></div>
-            <p className="text-xl text-ratrova-beige">
-              Visit us at our Dhaka offices
+            <p className="text-lg" style={{ color: '#888888' }}>
+              Select an available date to start a WhatsApp conversation.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {/* HQ */}
-            <div className="card-luxury bg-ratrova-charcoal/50 border-ratrova-gold/30">
-              <div className="w-16 h-16 bg-ratrova-gold rounded-full flex items-center justify-center mb-6">
-                <svg className="w-8 h-8 text-ratrova-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
+          <div className="p-6 sm:p-8 mb-8" style={{ backgroundColor: '#0F0F0F', border: '2px solid #D4AF37' }}>
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <span style={{ color: '#D4AF37' }}><CalendarIcon /></span>
+                <span className="font-medium" style={{ color: '#FFFFFF' }}>Next 14 Days</span>
               </div>
-              <h3 className="font-cormorant font-bold text-2xl text-ratrova-gold mb-4">
-                RATROVA Headquarters
-              </h3>
-              <p className="text-ratrova-beige leading-relaxed">
-                Al-Modina Tower<br />
-                2nd Floor, Flat-3E<br />
-                Sonr Bangla Project, Godabagh<br />
-                Keranigonj, Dhaka-1310<br />
-                Bangladesh
-              </p>
-              <p className="text-sm text-ratrova-beige/70 mt-4">
-                Creative Studio & Client Consultations
-              </p>
+              <div className="flex items-center gap-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#006A4E' }}></div>
+                  <span style={{ color: '#888888' }}>Available</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#333333' }}></div>
+                  <span style={{ color: '#888888' }}>Booked</span>
+                </div>
+              </div>
             </div>
 
-            {/* Production */}
-            <div className="card-luxury bg-ratrova-charcoal/50 border-ratrova-gold/30">
-              <div className="w-16 h-16 bg-ratrova-gold rounded-full flex items-center justify-center mb-6">
-                <svg className="w-8 h-8 text-ratrova-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <h3 className="font-cormorant font-bold text-2xl text-ratrova-gold mb-4">
-                Production Office
-              </h3>
-              <p className="text-ratrova-beige leading-relaxed">
-                House # 7, Zindabahar<br />
-                Road # 1, Nayabazar<br />
-                Dhaka-1100<br />
-                Bangladesh
-              </p>
-              <p className="text-sm text-ratrova-beige/70 mt-4">
-                Printing & Quality Assurance
-              </p>
+            <div className="grid grid-cols-7 gap-2 sm:gap-3">
+              {calendarDays.map((day, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleDateClick(day.isAvailable)}
+                  disabled={!day.isAvailable}
+                  className={`p-3 sm:p-4 text-center transition-all duration-300 ${day.isAvailable ? 'hover:scale-105 cursor-pointer' : 'cursor-not-allowed opacity-50'}`}
+                  style={{
+                    backgroundColor: day.isAvailable ? 'rgba(0, 106, 78, 0.15)' : '#111111',
+                    border: day.isAvailable ? '1px solid #006A4E' : '1px solid #222222'
+                  }}
+                >
+                  <p className="text-[10px] sm:text-xs uppercase mb-1" style={{ color: '#666666' }}>{day.dayName}</p>
+                  <p className="text-lg sm:text-2xl font-bold" style={{ color: day.isAvailable ? '#FFFFFF' : '#444444' }}>{day.day}</p>
+                  <p className="text-[10px] sm:text-xs" style={{ color: '#666666' }}>{day.month}</p>
+                </button>
+              ))}
             </div>
+
+            <p className="text-center mt-6 text-sm" style={{ color: '#555555' }}>
+              Click on an available date → Opens WhatsApp to book
+            </p>
+          </div>
+
+          {/* Direct CTA */}
+          <div className="text-center">
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-12 py-5 text-lg font-bold uppercase tracking-wide transition-all duration-300 hover:scale-105"
+              style={{ backgroundColor: '#006A4E', color: '#FFFFFF', boxShadow: '0 0 50px rgba(0, 106, 78, 0.4)' }}
+            >
+              <PhoneIcon />
+              Message on WhatsApp
+            </a>
+            <p className="mt-4 text-lg font-bold" style={{ color: '#D4AF37' }}>+880 1611-616861</p>
           </div>
         </div>
       </section>
 
-      {/* Social Media */}
-      <section className="section-padding">
-        <div className="luxury-container text-center">
-          <h2 className="heading-luxury text-4xl md:text-5xl mb-6">
-            Follow Our <span className="text-gold-gradient">Journey</span>
-          </h2>
-          <div className="gold-divider"></div>
-          <p className="text-lg text-ratrova-charcoal mb-12">
-            Stay updated with our latest work and insights
-          </p>
-
-          <div className="flex justify-center space-x-8">
-            <a
-              href="https://facebook.com/ratrova"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-16 h-16 bg-ratrova-gold rounded-full flex items-center justify-center hover:bg-ratrova-accent transition-colors duration-300 group"
-              aria-label="Facebook"
-            >
-              <svg className="w-8 h-8 text-ratrova-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-              </svg>
-            </a>
-
-            <a
-              href="https://instagram.com/ratrova"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-16 h-16 bg-ratrova-gold rounded-full flex items-center justify-center hover:bg-ratrova-accent transition-colors duration-300 group"
-              aria-label="Instagram"
-            >
-              <svg className="w-8 h-8 text-ratrova-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-              </svg>
-            </a>
-          </div>
+      {/* Personal Note */}
+      <section className="py-12" style={{ backgroundColor: '#0A0A0A' }}>
+        <div className="max-w-3xl mx-auto px-4 text-center">
+          <div className="w-16 h-[2px] mx-auto mb-8" style={{ backgroundColor: '#D4AF37' }}></div>
+          <blockquote className="text-xl italic leading-relaxed" style={{ color: '#888888', fontFamily: 'Georgia, serif' }}>
+            "I personally review every consultation request.<br />
+            <span style={{ color: '#D4AF37' }}>Serious founders only, please.</span>"
+          </blockquote>
+          <p className="mt-6 text-sm" style={{ color: '#555555' }}>— Sheikh Mohammad Sagor</p>
+          <div className="w-16 h-[2px] mx-auto mt-8" style={{ backgroundColor: '#D4AF37' }}></div>
         </div>
       </section>
     </div>

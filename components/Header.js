@@ -1,206 +1,119 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import {
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from '@clerk/nextjs'
+import { useState } from 'react'
 
-import { supabase } from '@/lib/supabase'
+// Inline SVG Icons
+const MenuIcon = () => (
+  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+)
+
+const XIcon = () => (
+  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+  </svg>
+)
 
 export default function Header() {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [dbStatus, setDbStatus] = useState('checking')
-  const pathname = usePathname()
+  const [isOpen, setIsOpen] = useState(false)
 
-  useEffect(() => {
-    const checkConnection = async () => {
-      try {
-        const { data, error } = await supabase.from('_health').select('*').limit(1)
-        if (error && error.code === 'PGRST116') {
-          // This error means the table doesn't exist, which is fine, it means we connected
-          setDbStatus('connected')
-        } else if (error) {
-          setDbStatus('disconnected')
-        } else {
-          setDbStatus('connected')
-        }
-      } catch (err) {
-        setDbStatus('disconnected')
-      }
-    }
-
-    checkConnection()
-
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  const navigation = [
+  const navLinks = [
     { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Services', href: '/services' },
-    { name: 'Portfolio', href: '/portfolio' },
-    { name: 'Contact', href: '/contact' },
+    { name: 'The Vision', href: '/about' },
+    { name: 'Core Services', href: '/services' },
+    { name: 'Contact', href: '/contact' }
   ]
 
   return (
     <header
-      className={`fixed w-full top-0 z-50 transition-all duration-300 ${isScrolled
-        ? 'bg-ratrova-black/95 backdrop-blur-sm shadow-2xl border-b border-ratrova-gold/20'
-        : 'bg-transparent'
-        }`}
+      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md"
+      style={{ backgroundColor: 'rgba(5, 5, 5, 0.95)', borderBottom: '1px solid #1a1a1a' }}
     >
-      <nav className="luxury-container">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <div className="flex items-center space-x-4">
-            <Link href="/" className="flex items-center space-x-3 group">
-              <img src="/ratrova-logo-v3.jpg" alt="Ratrova Logo" className="w-20 h-20 object-contain rounded-full group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(175,140,92,0.4)]" />
-              <span className="font-cormorant font-bold text-2xl text-ratrova-white tracking-wider">
-                RATROVA
-              </span>
-            </Link>
 
-            {/* DB Status Indicator */}
-            <div className="flex items-center space-x-1 px-2 py-1 rounded-full bg-ratrova-black/50 border border-ratrova-gold/10">
-              <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${dbStatus === 'connected' ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' :
-                  dbStatus === 'checking' ? 'bg-ratrova-gold shadow-[0_0_8px_rgba(175,140,92,0.6)]' :
-                    'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]'
-                }`}></div>
-              <span className="text-[10px] font-inter text-ratrova-beige/60 uppercase tracking-tighter">DB</span>
-            </div>
-          </div>
+          {/* Logo */}
+          <Link href="/" className="flex items-center">
+            <img
+              src="/mission-2030-logo.png"
+              alt="Mission 2030"
+              className="h-10 sm:h-12 w-auto"
+            />
+          </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
-            {navigation.map((item) => (
+          <nav className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
               <Link
-                key={item.name}
-                href={item.href}
-                className={`font-inter font-medium text-sm tracking-wider uppercase transition-colors duration-300 relative ${pathname === item.href
-                  ? 'text-ratrova-gold'
-                  : 'text-ratrova-white hover:text-ratrova-gold'
-                  }`}
+                key={link.name}
+                href={link.href}
+                className="text-sm font-medium uppercase tracking-wider transition-colors duration-300"
+                style={{ color: '#AAAAAA' }}
+                onMouseEnter={(e) => e.target.style.color = '#D4AF37'}
+                onMouseLeave={(e) => e.target.style.color = '#AAAAAA'}
               >
-                {item.name}
-                {pathname === item.href && (
-                  <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-ratrova-gold"></span>
-                )}
+                {link.name}
               </Link>
             ))}
-            <Link href="/survey" className="btn-primary">
-              Start Survey
-            </Link>
+          </nav>
 
-            {/* Clerk Authentication */}
-            <SignedOut>
-              <SignInButton mode="modal">
-                <button className="font-inter font-medium text-sm tracking-wider uppercase text-ratrova-white hover:text-ratrova-gold transition-colors duration-300">
-                  Sign In
-                </button>
-              </SignInButton>
-            </SignedOut>
-            <SignedIn>
-              <UserButton
-                appearance={{
-                  elements: {
-                    avatarBox: "w-10 h-10 border-2 border-ratrova-gold/50 hover:border-ratrova-gold transition-colors"
-                  }
-                }}
-              />
-            </SignedIn>
+          {/* CTA Button */}
+          <div className="hidden md:block">
+            <Link
+              href="/contact"
+              className="px-6 py-3 text-sm font-bold uppercase tracking-wider transition-all duration-300 hover:scale-105"
+              style={{
+                backgroundColor: '#006A4E',
+                color: '#FFFFFF',
+                boxShadow: '0 0 20px rgba(0, 106, 78, 0.3)'
+              }}
+            >
+              Book Consultation
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden text-ratrova-white p-2 hover:text-ratrova-gold transition-colors"
-            aria-label="Toggle menu"
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden p-2"
+            style={{ color: '#D4AF37' }}
           >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              {isMobileMenuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
+            {isOpen ? <XIcon /> : <MenuIcon />}
           </button>
         </div>
+      </div>
 
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden bg-ratrova-black/98 backdrop-blur-sm absolute top-20 left-0 right-0 border-t border-ratrova-gold/20 shadow-2xl">
-            <div className="flex flex-col space-y-4 p-6">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`font-inter font-medium text-sm tracking-wider uppercase transition-colors duration-300 py-2 ${pathname === item.href
-                    ? 'text-ratrova-gold border-l-4 border-ratrova-gold pl-4'
-                    : 'text-ratrova-white hover:text-ratrova-gold hover:pl-4'
-                    }`}
-                >
-                  {item.name}
-                </Link>
-              ))}
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div
+          className="md:hidden absolute top-20 left-0 right-0 py-6 px-4"
+          style={{ backgroundColor: '#0A0A0A', borderBottom: '1px solid #1a1a1a' }}
+        >
+          <nav className="flex flex-col gap-4">
+            {navLinks.map((link) => (
               <Link
-                href="/survey"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="btn-primary text-center"
+                key={link.name}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className="text-lg font-medium py-2 transition-colors"
+                style={{ color: '#AAAAAA', borderBottom: '1px solid #1a1a1a' }}
               >
-                Start Survey
+                {link.name}
               </Link>
-
-              {/* Mobile Clerk Authentication */}
-              <SignedOut>
-                <SignInButton mode="modal">
-                  <button className="font-inter font-medium text-sm tracking-wider uppercase text-ratrova-white hover:text-ratrova-gold transition-colors duration-300 py-2 text-left">
-                    Sign In
-                  </button>
-                </SignInButton>
-              </SignedOut>
-              <SignedIn>
-                <div className="flex items-center space-x-3 py-2">
-                  <UserButton
-                    appearance={{
-                      elements: {
-                        avatarBox: "w-10 h-10 border-2 border-ratrova-gold/50"
-                      }
-                    }}
-                  />
-                  <span className="text-ratrova-white font-inter text-sm">Account</span>
-                </div>
-              </SignedIn>
-            </div>
-          </div>
-        )}
-      </nav>
+            ))}
+            <Link
+              href="/contact"
+              onClick={() => setIsOpen(false)}
+              className="mt-4 text-center py-4 font-bold uppercase tracking-wider"
+              style={{ backgroundColor: '#006A4E', color: '#FFFFFF' }}
+            >
+              Book Consultation
+            </Link>
+          </nav>
+        </div>
+      )}
     </header>
   )
 }

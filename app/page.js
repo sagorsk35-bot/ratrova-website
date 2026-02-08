@@ -1,238 +1,428 @@
 'use client'
 
+import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+
+// Inline SVG Icons
+const DownloadIcon = () => (
+  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+  </svg>
+)
+
+const UploadIcon = () => (
+  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+  </svg>
+)
+
+const CheckIcon = () => (
+  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+  </svg>
+)
+
+const BoxIcon = () => (
+  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+  </svg>
+)
+
+const TargetIcon = () => (
+  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+  </svg>
+)
+
+const CalendarIcon = () => (
+  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+  </svg>
+)
+
+const ArrowRightIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+  </svg>
+)
+
+const AwardIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+  </svg>
+)
 
 export default function Home() {
-  const [isVisible, setIsVisible] = useState(false)
+  // Badge Generator State
+  const [selectedBadge, setSelectedBadge] = useState('patriot')
+  const [userImage, setUserImage] = useState(null)
+  const [generatedBadge, setGeneratedBadge] = useState(null)
+  const [isCanvasReady, setIsCanvasReady] = useState(false)
+  const canvasRef = useRef(null)
+  const fileInputRef = useRef(null)
 
+  // Canvas Drawing Effect
   useEffect(() => {
-    setIsVisible(true)
-  }, [])
+    if (!canvasRef.current || !userImage) return
+
+    const canvas = canvasRef.current
+    const ctx = canvas.getContext('2d')
+    const size = 500
+
+    canvas.width = size
+    canvas.height = size
+
+    const img = new Image()
+    img.crossOrigin = 'anonymous'
+    img.onload = () => {
+      const imgRatio = img.width / img.height
+      let drawWidth, drawHeight, offsetX, offsetY
+
+      if (imgRatio > 1) {
+        drawHeight = size
+        drawWidth = size * imgRatio
+        offsetX = -(drawWidth - size) / 2
+        offsetY = 0
+      } else {
+        drawWidth = size
+        drawHeight = size / imgRatio
+        offsetX = 0
+        offsetY = -(drawHeight - size) / 2
+      }
+
+      ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight)
+
+      const badge = new Image()
+      badge.crossOrigin = 'anonymous'
+      badge.onload = () => {
+        ctx.drawImage(badge, 0, 0, size, size)
+        setGeneratedBadge(canvas.toDataURL('image/png'))
+        setIsCanvasReady(true)
+      }
+      badge.onerror = () => {
+        setGeneratedBadge(canvas.toDataURL('image/png'))
+        setIsCanvasReady(true)
+      }
+      badge.src = selectedBadge === 'patriot'
+        ? '/badges/badge-patriot.png'
+        : '/badges/badge-business.png'
+    }
+    img.src = userImage
+  }, [userImage, selectedBadge])
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (event) => {
+        setUserImage(event.target?.result)
+        setIsCanvasReady(false)
+        setGeneratedBadge(null)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const handleDownloadBadge = () => {
+    if (!generatedBadge) return
+    const link = document.createElement('a')
+    link.download = 'Mission2030-Badge.png'
+    link.href = generatedBadge
+    link.click()
+  }
+
+  const calendarDays = Array.from({ length: 14 }, (_, i) => {
+    const date = new Date()
+    date.setDate(date.getDate() + i + 1)
+    return {
+      day: date.getDate(),
+      dayName: date.toLocaleDateString('en-US', { weekday: 'short' }),
+      isAvailable: i % 2 === 0 || i % 3 === 0
+    }
+  })
 
   return (
-    <div className="bg-ratrova-white">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center bg-ratrova-black overflow-hidden">
-        {/* Background Pattern */}
-        {/* Background Pattern - Layer 1 (Primary Dots) */}
-        <div className="absolute inset-0 animate-dots-slow">
+    <div className="min-h-screen" style={{ backgroundColor: '#050505' }}>
+
+      {/* HERO SECTION */}
+      <section className="relative min-h-screen flex items-center overflow-hidden pt-20" style={{ backgroundColor: '#050505' }}>
+        <div className="absolute inset-0 opacity-[0.02]">
           <div className="absolute inset-0" style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, #AF8C5C 1px, transparent 0)`,
-            backgroundSize: '40px 40px'
+            backgroundImage: `radial-gradient(circle at 2px 2px, #D4AF37 1px, transparent 0)`,
+            backgroundSize: '60px 60px'
           }}></div>
         </div>
 
-        {/* Background Pattern - Layer 2 (Secondary Floating Dots) */}
-        <div className="absolute inset-0 animate-dots-fast">
-          <div className="absolute inset-0 opacity-10" style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, #AF8C5C 0.5px, transparent 0)`,
-            backgroundSize: '60px 60px',
-            backgroundPosition: '15px 15px'
-          }}></div>
-        </div>
-
-        <div className={`luxury-container relative z-10 text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div className="mb-8 flex justify-center">
-            <img src="/ratrova-logo-v3.jpg" alt="Ratrova Logo" className="w-48 h-48 object-contain rounded-full animate-gold-shimmer shadow-[0_0_25px_rgba(175,140,92,0.3)]" />
-          </div>
-
-          {/* Main Heading */}
-          <h1 className="font-cormorant font-bold text-5xl md:text-7xl lg:text-8xl text-ratrova-white mb-6 leading-tight">
-            RATROVA
-          </h1>
-
-          {/* Philosophy */}
-          <div className="max-w-4xl mx-auto mb-8">
-            <p className="font-cormorant italic text-2xl md:text-3xl lg:text-4xl text-ratrova-beige leading-relaxed">
-              "Before form, there is meaning.<br />
-              Before beauty, there is belief."
-            </p>
-          </div>
-
-          <div className="gold-divider"></div>
-
-          {/* Subtitle */}
-          <p className="text-xl md:text-2xl text-ratrova-beige mb-12 font-inter tracking-wide">
-            Bangladesh's First Luxury Packaging Design Agency
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Link href="/survey" className="btn-primary">
-              Share Your Packaging Challenge
-            </Link>
-            <Link href="/portfolio" className="btn-secondary">
-              View Our Work
-            </Link>
-          </div>
-
-          {/* Scroll Indicator */}
-          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <svg className="w-6 h-6 text-ratrova-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </svg>
-          </div>
-        </div>
-      </section>
-
-      {/* Problem Statement Section */}
-      <section className="section-padding bg-ratrova-white">
-        <div className="luxury-container">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="heading-luxury text-4xl md:text-5xl lg:text-6xl mb-6">
-              We Understand Your <span className="text-gold-gradient">Packaging Pain Points</span>
-            </h2>
-            <div className="gold-divider"></div>
-            <p className="text-lg md:text-xl text-ratrova-charcoal leading-relaxed mb-12">
-              From inconsistent branding to poor print quality, from endless delays to lack of creative vision –
-              packaging challenges can make or break your brand's first impression.
-            </p>
-            <Link href="/survey" className="btn-primary inline-block">
-              Tell Us Your Challenge
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Preview */}
-      <section className="section-padding bg-ratrova-beige/20">
-        <div className="luxury-container">
-          <div className="text-center mb-16">
-            <h2 className="heading-luxury text-4xl md:text-5xl lg:text-6xl mb-6">
-              Our <span className="text-gold-gradient">Expertise</span>
-            </h2>
-            <div className="gold-divider"></div>
-            <p className="text-lg text-ratrova-charcoal max-w-2xl mx-auto">
-              Comprehensive design solutions that elevate your brand
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                title: 'Brand Identity',
-                description: 'Complete visual identity systems that define your brand\'s essence',
-                icon: '🎨'
-              },
-              {
-                title: 'Luxury Packaging Design',
-                description: 'International-standard packaging that commands premium positioning',
-                icon: '📦'
-              },
-              {
-                title: 'Brand Consultancy',
-                description: 'Strategic guidance from concept to market launch',
-                icon: '💡'
-              },
-              {
-                title: 'Print-Ready Files',
-                description: 'Technical precision ensuring flawless production',
-                icon: '🖨️'
-              },
-              {
-                title: 'Social Media Content',
-                description: 'Engaging visual content that amplifies your brand story',
-                icon: '📱'
-              },
-              {
-                title: 'Quality Assurance',
-                description: 'QR-enabled tracking and premium production support',
-                icon: '✓'
-              },
-            ].map((service, index) => (
-              <div key={index} className="card-luxury group cursor-pointer">
-                <div className="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-300">
-                  {service.icon}
-                </div>
-                <h3 className="font-cormorant font-bold text-2xl text-ratrova-black mb-4">
-                  {service.title}
-                </h3>
-                <p className="text-ratrova-charcoal leading-relaxed">
-                  {service.description}
-                </p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="mb-8">
+                <img src="/mission-2030-logo.png" alt="Mission 2030" className="w-64 sm:w-80 h-auto" />
               </div>
-            ))}
+
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6" style={{ fontFamily: 'Inter, sans-serif', color: '#FFFFFF' }}>
+                Building Bangladesh's<br />
+                <span style={{ color: '#D4AF37' }}>Next Global Brands.</span>
+              </h1>
+
+              <p className="text-xl sm:text-2xl mb-8 leading-relaxed" style={{ color: '#888888' }}>
+                <span style={{ color: '#D4AF37', fontWeight: '600' }}>18 Years of Mastery.</span>{' '}
+                100% Free Knowledge.
+              </p>
+
+              <a
+                href="/lesson-01.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 px-10 py-5 text-lg font-bold tracking-wide uppercase transition-all duration-300 hover:scale-105"
+                style={{
+                  backgroundColor: '#006A4E',
+                  color: '#FFFFFF',
+                  boxShadow: '0 0 40px rgba(0, 106, 78, 0.4)'
+                }}
+              >
+                <DownloadIcon />
+                GET LESSON 01
+              </a>
+
+              <div className="flex items-center gap-6 mt-10">
+                <div className="flex items-center gap-2" style={{ color: '#666666' }}>
+                  <span style={{ color: '#006A4E' }}><CheckIcon /></span>
+                  <span className="text-sm">No Sign-up Required</span>
+                </div>
+                <div className="flex items-center gap-2" style={{ color: '#666666' }}>
+                  <span style={{ color: '#D4AF37' }}><AwardIcon /></span>
+                  <span className="text-sm">Sadaqah Jariyah</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="hidden lg:block">
+              <div className="relative">
+                <div className="absolute -inset-4 rounded-lg opacity-20" style={{
+                  background: 'linear-gradient(135deg, #D4AF37 0%, #006A4E 100%)',
+                  filter: 'blur(40px)'
+                }}></div>
+                <img src="/FOUNDER ON MISSION.png" alt="Sheikh Mohammad Sagor" className="relative z-10 w-full max-w-lg mx-auto" />
+                <div className="absolute bottom-4 left-4 right-4 p-4 z-20" style={{ backgroundColor: 'rgba(5, 5, 5, 0.9)', border: '1px solid #D4AF37' }}>
+                  <p className="font-bold" style={{ color: '#FFFFFF' }}>Sheikh Mohammad Sagor</p>
+                  <p className="text-sm" style={{ color: '#D4AF37' }}>Founder & Brand Strategist</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* BADGE GENERATOR SECTION */}
+      <section className="py-20 sm:py-28" style={{ backgroundColor: '#0A0A0A' }}>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <div className="w-20 h-[2px] mx-auto mb-8" style={{ backgroundColor: '#D4AF37' }}></div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4" style={{ fontFamily: 'Inter, sans-serif', color: '#FFFFFF' }}>
+              Wear the Badge. <span style={{ color: '#D4AF37' }}>Join the Mission.</span>
+            </h2>
+            <p className="text-lg" style={{ color: '#888888' }}>
+              Show the world you're building Bangladesh's future.
+            </p>
+          </div>
+
+          <div className="p-8 sm:p-10" style={{ backgroundColor: '#0F0F0F', border: '2px solid #D4AF37', boxShadow: '0 0 80px rgba(212, 175, 55, 0.1)' }}>
+            <div className="flex justify-center mb-10">
+              <div className="inline-flex p-1" style={{ backgroundColor: '#111111', border: '1px solid #222222' }}>
+                <button
+                  onClick={() => setSelectedBadge('patriot')}
+                  className="px-6 py-3 text-sm font-bold uppercase tracking-wider transition-all duration-300"
+                  style={{
+                    backgroundColor: selectedBadge === 'patriot' ? '#D4AF37' : 'transparent',
+                    color: selectedBadge === 'patriot' ? '#050505' : '#666666'
+                  }}
+                >
+                  Patriot Builder
+                </button>
+                <button
+                  onClick={() => setSelectedBadge('business')}
+                  className="px-6 py-3 text-sm font-bold uppercase tracking-wider transition-all duration-300"
+                  style={{
+                    backgroundColor: selectedBadge === 'business' ? '#006A4E' : 'transparent',
+                    color: selectedBadge === 'business' ? '#FFFFFF' : '#666666'
+                  }}
+                >
+                  Future Global Brand
+                </button>
+              </div>
+            </div>
+
+            <div className="flex justify-center mb-8">
+              <div className="w-full max-w-[500px] aspect-square flex items-center justify-center overflow-hidden" style={{ backgroundColor: '#111111', border: '2px dashed #333333' }}>
+                {!userImage ? (
+                  <div className="text-center p-8">
+                    <UploadIcon />
+                    <p className="text-base mt-4" style={{ color: '#555555' }}>Upload your photo to generate badge</p>
+                  </div>
+                ) : (
+                  <canvas ref={canvasRef} className="w-full h-full" style={{ maxWidth: '500px', maxHeight: '500px' }} />
+                )}
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="inline-flex items-center justify-center gap-3 px-8 py-4 font-bold uppercase tracking-wide transition-all duration-300 hover:scale-105"
+                style={{ backgroundColor: 'transparent', color: '#D4AF37', border: '2px solid #D4AF37' }}
+              >
+                <UploadIcon />
+                {userImage ? 'Change Photo' : 'Upload Photo'}
+              </button>
+
+              {isCanvasReady && generatedBadge && (
+                <button
+                  onClick={handleDownloadBadge}
+                  className="inline-flex items-center justify-center gap-3 px-10 py-4 font-bold uppercase tracking-wide transition-all duration-300 hover:scale-105"
+                  style={{ backgroundColor: '#006A4E', color: '#FFFFFF', boxShadow: '0 0 40px rgba(0, 106, 78, 0.4)' }}
+                >
+                  <DownloadIcon />
+                  Download Badge
+                </button>
+              )}
+            </div>
+
+            <p className="text-center mt-8 text-sm" style={{ color: '#555555' }}>
+              📱 Share on Facebook, LinkedIn, WhatsApp with <span style={{ color: '#D4AF37' }}>#Mission2030</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* SERVICES SECTION */}
+      <section className="py-20 sm:py-28" style={{ backgroundColor: '#050505' }}>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="w-20 h-[2px] mx-auto mb-8" style={{ backgroundColor: '#D4AF37' }}></div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4" style={{ fontFamily: 'Inter, sans-serif', color: '#FFFFFF' }}>
+              Two Pillars. <span style={{ color: '#D4AF37' }}>One Mission.</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="p-8 sm:p-10 transition-all duration-500 hover:scale-[1.02]" style={{ backgroundColor: '#0A0A0A', border: '2px solid #D4AF37' }}>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-16 h-16 flex items-center justify-center" style={{ backgroundColor: 'rgba(212, 175, 55, 0.1)', border: '1px solid #D4AF37' }}>
+                  <span style={{ color: '#D4AF37' }}><BoxIcon /></span>
+                </div>
+                <span className="px-3 py-1 text-xs font-bold uppercase" style={{ backgroundColor: 'rgba(212, 175, 55, 0.2)', color: '#D4AF37' }}>Hardware</span>
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-bold mb-4" style={{ color: '#FFFFFF' }}>Packaging Infrastructure</h3>
+              <p className="text-base leading-relaxed mb-6" style={{ color: '#888888' }}>World-class structural design, material science, and production-ready engineering for the global shelf.</p>
+              <ul className="space-y-3">
+                {['3D Structural Design', 'Material Sourcing (Food-Safe, Eco)', 'Production-Ready Dielines', 'International Compliance'].map((item, idx) => (
+                  <li key={idx} className="flex items-center gap-3">
+                    <span style={{ color: '#006A4E' }}><CheckIcon /></span>
+                    <span className="text-sm" style={{ color: '#AAAAAA' }}>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="p-8 sm:p-10 transition-all duration-500 hover:scale-[1.02]" style={{ backgroundColor: '#0A0A0A', border: '2px solid #006A4E' }}>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-16 h-16 flex items-center justify-center" style={{ backgroundColor: 'rgba(0, 106, 78, 0.1)', border: '1px solid #006A4E' }}>
+                  <span style={{ color: '#006A4E' }}><TargetIcon /></span>
+                </div>
+                <span className="px-3 py-1 text-xs font-bold uppercase" style={{ backgroundColor: 'rgba(0, 106, 78, 0.2)', color: '#006A4E' }}>Software</span>
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-bold mb-4" style={{ color: '#FFFFFF' }}>Strategic Consultation</h3>
+              <p className="text-base leading-relaxed mb-6" style={{ color: '#888888' }}>1-on-1 brand strategy with Sheikh Mohammad Sagor. Positioning your brand for 2030 and beyond.</p>
+              <ul className="space-y-3">
+                {['Brand DNA Development', 'Competitive Analysis', 'Export Market Advisory', 'Consumer Psychology Mapping'].map((item, idx) => (
+                  <li key={idx} className="flex items-center gap-3">
+                    <span style={{ color: '#D4AF37' }}><CheckIcon /></span>
+                    <span className="text-sm" style={{ color: '#AAAAAA' }}>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           <div className="text-center mt-12">
-            <Link href="/services" className="btn-secondary">
-              Explore All Services
-            </Link>
+            <p className="text-lg italic" style={{ color: '#D4AF37', fontFamily: 'Georgia, serif' }}>
+              "Strategic Consultation is offered as Sadaqah Jariyah — free for serious founders."
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Why RATROVA Section */}
-      <section className="section-padding bg-ratrova-black text-ratrova-white">
-        <div className="luxury-container">
-          <div className="text-center mb-16">
-            <h2 className="font-cormorant font-bold text-4xl md:text-5xl lg:text-6xl mb-6 text-ratrova-white">
-              Why <span className="text-ratrova-gold">RATROVA</span>?
+      {/* BOOKING SECTION */}
+      <section className="py-20 sm:py-28" style={{ backgroundColor: '#0A0A0A' }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <div className="w-20 h-[2px] mx-auto mb-8" style={{ backgroundColor: '#D4AF37' }}></div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4" style={{ fontFamily: 'Inter, sans-serif', color: '#FFFFFF' }}>
+              Consult with <span style={{ color: '#D4AF37' }}>Sheikh Mohammad Sagor</span>
             </h2>
-            <div className="gold-divider"></div>
+            <p className="text-lg" style={{ color: '#888888' }}>Check availability and book your free strategy session.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-            {[
-              {
-                title: '17 Years of Excellence',
-                description: 'Deep industry expertise and proven track record in packaging design'
-              },
-              {
-                title: 'Luxury Positioning',
-                description: 'Bangladesh\'s only agency specializing in premium brand packaging'
-              },
-              {
-                title: 'Speed & Quality',
-                description: '48-72hr express delivery without compromising on excellence'
-              },
-              {
-                title: 'Mission-Driven',
-                description: 'Building Bangladesh\'s design ecosystem while serving global standards'
-              }
-            ].map((item, index) => (
-              <div key={index} className="flex items-start space-x-4">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-ratrova-gold rounded-full flex items-center justify-center">
-                    <span className="font-cormorant font-bold text-2xl text-ratrova-white">
-                      {index + 1}
-                    </span>
-                  </div>
+          <div className="p-6 sm:p-8 mb-8" style={{ backgroundColor: '#0F0F0F', border: '2px solid #D4AF37' }}>
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <span style={{ color: '#D4AF37' }}><CalendarIcon /></span>
+                <span className="font-medium" style={{ color: '#FFFFFF' }}>Next 14 Days</span>
+              </div>
+              <div className="flex items-center gap-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#006A4E' }}></div>
+                  <span style={{ color: '#888888' }}>Available</span>
                 </div>
-                <div>
-                  <h3 className="font-cormorant font-bold text-2xl text-ratrova-gold mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-ratrova-beige leading-relaxed">
-                    {item.description}
-                  </p>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#333333' }}></div>
+                  <span style={{ color: '#888888' }}>Booked</span>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
 
-      {/* CTA Section */}
-      <section className="section-padding bg-gradient-to-br from-ratrova-gold to-ratrova-accent text-ratrova-white">
-        <div className="luxury-container text-center">
-          <h2 className="font-cormorant font-bold text-4xl md:text-5xl lg:text-6xl mb-6">
-            Let's Transform Your Brand Together
-          </h2>
-          <p className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto leading-relaxed">
-            Share your packaging challenges with us. We'll contact you with a tailored suggestion.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Link href="/survey" className="bg-ratrova-black text-ratrova-white px-12 py-5 rounded-none font-inter font-medium tracking-wider uppercase transition-all duration-300 hover:scale-105 hover:shadow-2xl">
-              Start Your Journey
-            </Link>
-            <Link href="/contact" className="border-2 border-ratrova-white text-ratrova-white px-12 py-5 rounded-none font-inter font-medium tracking-wider uppercase transition-all duration-300 hover:bg-ratrova-white hover:text-ratrova-gold">
-              Get In Touch
-            </Link>
+            <div className="grid grid-cols-7 gap-2 sm:gap-3">
+              {calendarDays.map((day, index) => (
+                <button
+                  key={index}
+                  onClick={() => day.isAvailable && window.open('https://wa.me/8801611616861?text=I%20want%20to%20join%20Vision%202030%20Inner%20Circle', '_blank')}
+                  disabled={!day.isAvailable}
+                  className={`p-3 sm:p-4 text-center transition-all duration-300 ${day.isAvailable ? 'hover:scale-105 cursor-pointer' : 'cursor-not-allowed'}`}
+                  style={{
+                    backgroundColor: day.isAvailable ? 'rgba(0, 106, 78, 0.15)' : '#111111',
+                    border: day.isAvailable ? '1px solid #006A4E' : '1px solid #222222',
+                    opacity: day.isAvailable ? 1 : 0.5
+                  }}
+                >
+                  <p className="text-[10px] sm:text-xs uppercase mb-1" style={{ color: '#666666' }}>{day.dayName}</p>
+                  <p className="text-lg sm:text-2xl font-bold" style={{ color: day.isAvailable ? '#FFFFFF' : '#444444' }}>{day.day}</p>
+                </button>
+              ))}
+            </div>
+
+            <p className="text-center mt-6 text-sm" style={{ color: '#555555' }}>
+              Click on an available date → Opens WhatsApp to book
+            </p>
+          </div>
+
+          <div className="text-center">
+            <a
+              href="https://wa.me/8801611616861?text=I%20want%20to%20join%20Vision%202030%20Inner%20Circle"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-12 py-5 text-lg font-bold uppercase tracking-wide transition-all duration-300 hover:scale-105"
+              style={{ backgroundColor: '#006A4E', color: '#FFFFFF', boxShadow: '0 0 50px rgba(0, 106, 78, 0.4)' }}
+            >
+              Book Free Strategy Session
+              <ArrowRightIcon />
+            </a>
+            <p className="mt-4 text-lg font-bold" style={{ color: '#D4AF37' }}>+880 1611-616861</p>
           </div>
         </div>
       </section>
     </div>
   )
 }
+

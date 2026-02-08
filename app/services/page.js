@@ -1,365 +1,148 @@
+'use client'
+
 import Link from 'next/link'
 
-export default function Services() {
-  const services = [
-    {
-      category: 'Brand Identity & Strategy',
-      icon: '🎨',
-      services: [
-        {
-          name: 'Complete Brand Identity',
-          description: 'Logo design, color palette, typography system, brand voice, and visual guidelines'
-        },
-        {
-          name: 'Brand Kit Development',
-          description: 'Comprehensive brand assets package including all variations and usage scenarios'
-        },
-        {
-          name: 'Color Psychology Application',
-          description: 'Strategic color selection based on brand positioning and target audience psychology'
-        },
-        {
-          name: 'Typography Selection',
-          description: 'Custom typeface pairing for brand personality and maximum readability'
-        }
-      ]
-    },
-    {
-      category: 'Packaging Design',
-      icon: '📦',
-      services: [
-        {
-          name: 'Luxury Packaging Systems',
-          description: 'Complete packaging ecosystems for premium brands seeking international standards'
-        },
-        {
-          name: 'Custom Burger Boxes & Food Containers',
-          description: 'Fast-turnaround (48-72hr) custom packaging for F&B businesses'
-        },
-        {
-          name: 'Retail Packaging Design',
-          description: 'Product packaging that commands shelf presence and drives purchase decisions'
-        },
-        {
-          name: 'Limited Edition Collections',
-          description: 'Special edition packaging for seasonal launches and premium offerings'
-        }
-      ]
-    },
-    {
-      category: 'Digital & Marketing',
-      icon: '📱',
-      services: [
-        {
-          name: 'Social Media Content Creation',
-          description: 'Engaging visual content optimized for Instagram, Facebook, and TikTok'
-        },
-        {
-          name: 'Video Marketing',
-          description: 'Brand films, product showcases, and promotional videos'
-        },
-        {
-          name: 'Facebook Ads Account Support',
-          description: 'Creative assets and campaign consultation for Facebook advertising'
-        },
-        {
-          name: 'Brand Photography Direction',
-          description: 'Visual style guidance and photoshoot art direction'
-        }
-      ]
-    },
-    {
-      category: 'Production & Technical',
-      icon: '🖨️',
-      services: [
-        {
-          name: 'Print-Ready File Preparation',
-          description: 'Technical file setup ensuring flawless production (bleed, crop marks, color profiles)'
-        },
-        {
-          name: 'Printing & Packaging Support',
-          description: 'Vendor coordination and quality assurance throughout production'
-        },
-        {
-          name: 'QR-Based Quality Enrollment',
-          description: 'Trackable quality assurance system for premium packaging'
-        },
-        {
-          name: 'Material Consultation',
-          description: 'Paperboard selection, coating options, and finishing recommendations'
-        }
-      ]
-    },
-    {
-      category: 'Consultancy & Strategy',
-      icon: '💡',
-      services: [
-        {
-          name: 'Brand Consultancy',
-          description: 'Strategic guidance from concept to market launch'
-        },
-        {
-          name: 'Competitive Positioning',
-          description: 'Market analysis and differentiation strategy development'
-        },
-        {
-          name: 'Brand Guidelines Creation',
-          description: 'Comprehensive documentation ensuring brand consistency'
-        },
-        {
-          name: 'International Standard Compliance',
-          description: 'Export-ready packaging meeting global regulations'
-        }
-      ]
-    }
-  ]
+// Inline SVG Icons
+const BoxIcon = () => (
+  <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+  </svg>
+)
 
+const TargetIcon = () => (
+  <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+  </svg>
+)
+
+const CheckIcon = () => (
+  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+  </svg>
+)
+
+const ArrowRightIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+  </svg>
+)
+
+export default function Services() {
   return (
-    <div className="bg-ratrova-white">
+    <div className="min-h-screen" style={{ backgroundColor: '#050505' }}>
+
       {/* Hero Section */}
-      <section className="section-padding bg-ratrova-black text-ratrova-white">
-        <div className="luxury-container text-center">
-          <h1 className="font-cormorant font-bold text-5xl md:text-6xl lg:text-7xl mb-6">
-            Our <span className="text-ratrova-gold">Services</span>
+      <section className="pt-32 pb-16" style={{ backgroundColor: '#050505' }}>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="w-20 h-[2px] mx-auto mb-8" style={{ backgroundColor: '#D4AF37' }}></div>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6" style={{ fontFamily: 'Inter, sans-serif', color: '#FFFFFF' }}>
+            Two Pillars. <span style={{ color: '#D4AF37' }}>One Mission.</span>
           </h1>
-          <div className="gold-divider"></div>
-          <p className="text-xl md:text-2xl text-ratrova-beige max-w-4xl mx-auto leading-relaxed">
-            Comprehensive design solutions that elevate your brand from concept to market
+          <p className="text-xl" style={{ color: '#888888' }}>
+            Everything we do serves one goal: elevating Bangladesh on the global stage.
           </p>
         </div>
       </section>
 
-      {/* Service Philosophy */}
-      <section className="section-padding">
-        <div className="luxury-container">
-          <div className="max-w-4xl mx-auto text-center mb-20">
-            <h2 className="heading-luxury text-4xl md:text-5xl mb-6">
-              Our <span className="text-gold-gradient">Approach</span>
-            </h2>
-            <div className="gold-divider"></div>
-            <p className="text-lg text-ratrova-charcoal leading-relaxed">
-              We don't just design packaging – we architect brand experiences. Every project begins with understanding 
-              your business strategy, then translating that into visual language that commands premium positioning.
-            </p>
-          </div>
+      {/* Services Grid */}
+      <section className="py-20" style={{ backgroundColor: '#0A0A0A' }}>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-          {/* Three Pillars */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: 'Strategic Foundation',
-                description: 'Every design decision rooted in business objectives and market positioning'
-              },
-              {
-                title: 'Luxury Execution',
-                description: 'International-standard quality with meticulous attention to every detail'
-              },
-              {
-                title: 'Speed Without Compromise',
-                description: '48-72hr express delivery through ruthlessly optimized processes'
-              }
-            ].map((pillar, index) => (
-              <div key={index} className="card-luxury text-center">
-                <div className="text-4xl mb-4">⚡</div>
-                <h3 className="heading-luxury text-2xl mb-4 text-ratrova-gold">
-                  {pillar.title}
-                </h3>
-                <p className="text-ratrova-charcoal">
-                  {pillar.description}
+            {/* Service 1: Export-Quality Packaging */}
+            <div className="p-10 transition-all duration-500 hover:scale-[1.02]" style={{ backgroundColor: '#0F0F0F', border: '2px solid #D4AF37' }}>
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-20 h-20 flex items-center justify-center" style={{ backgroundColor: 'rgba(212, 175, 55, 0.1)', border: '1px solid #D4AF37' }}>
+                  <span style={{ color: '#D4AF37' }}><BoxIcon /></span>
+                </div>
+                <span className="px-4 py-2 text-xs font-bold uppercase tracking-wider" style={{ backgroundColor: 'rgba(212, 175, 55, 0.2)', color: '#D4AF37' }}>Hardware</span>
+              </div>
+
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: '#FFFFFF' }}>Export-Quality Packaging</h2>
+              <p className="text-lg leading-relaxed mb-8" style={{ color: '#888888' }}>
+                World-class structural design, material science, and production-ready engineering.
+                Built for the global shelf.
+              </p>
+
+              <ul className="space-y-4 mb-10">
+                {['3D Structural Design & Prototyping', 'Food-Safe & Eco-Friendly Materials', 'Production-Ready Dielines', 'FDA & EU Compliance Ready', 'Vendor Coordination & QC'].map((item, idx) => (
+                  <li key={idx} className="flex items-center gap-3">
+                    <span style={{ color: '#006A4E' }}><CheckIcon /></span>
+                    <span style={{ color: '#AAAAAA' }}>{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="aspect-video flex items-center justify-center" style={{ backgroundColor: '#111111', border: '1px dashed #333333' }}>
+                <div className="text-center">
+                  <span style={{ color: '#333333' }}><BoxIcon /></span>
+                  <p className="text-xs mt-2" style={{ color: '#444444' }}>3D Packaging Preview</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Service 2: Brand Strategy Consulting */}
+            <div className="p-10 transition-all duration-500 hover:scale-[1.02]" style={{ backgroundColor: '#0F0F0F', border: '2px solid #006A4E' }}>
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-20 h-20 flex items-center justify-center" style={{ backgroundColor: 'rgba(0, 106, 78, 0.1)', border: '1px solid #006A4E' }}>
+                  <span style={{ color: '#006A4E' }}><TargetIcon /></span>
+                </div>
+                <span className="px-4 py-2 text-xs font-bold uppercase tracking-wider" style={{ backgroundColor: 'rgba(0, 106, 78, 0.2)', color: '#006A4E' }}>Software</span>
+              </div>
+
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: '#FFFFFF' }}>Brand Strategy Consulting</h2>
+              <p className="text-lg leading-relaxed mb-8" style={{ color: '#888888' }}>
+                1-on-1 consultation with Sheikh Mohammad Sagor.
+                Positioning your brand for 2030 and beyond.
+              </p>
+
+              <ul className="space-y-4 mb-10">
+                {['Brand DNA & Identity Development', 'Competitive Market Analysis', 'Export Market Advisory', 'Consumer Psychology Mapping', 'Shelf Attention Strategy'].map((item, idx) => (
+                  <li key={idx} className="flex items-center gap-3">
+                    <span style={{ color: '#D4AF37' }}><CheckIcon /></span>
+                    <span style={{ color: '#AAAAAA' }}>{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="p-6" style={{ backgroundColor: '#111111', borderLeft: '3px solid #D4AF37' }}>
+                <p className="text-sm italic" style={{ color: '#D4AF37' }}>
+                  "Offered as Sadaqah Jariyah — FREE for serious founders building for Bangladesh."
                 </p>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Service Categories */}
-      <section className="section-padding bg-ratrova-beige/20">
-        <div className="luxury-container">
-          <h2 className="heading-luxury text-4xl md:text-5xl mb-16 text-center">
-            What We <span className="text-gold-gradient">Offer</span>
-          </h2>
-
-          <div className="space-y-16">
-            {services.map((category, catIndex) => (
-              <div key={catIndex} className="max-w-6xl mx-auto">
-                <div className="flex items-center space-x-4 mb-8">
-                  <span className="text-5xl">{category.icon}</span>
-                  <h3 className="heading-luxury text-3xl md:text-4xl">
-                    {category.category}
-                  </h3>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {category.services.map((service, serviceIndex) => (
-                    <div key={serviceIndex} className="card-luxury group hover:shadow-2xl">
-                      <h4 className="font-cormorant font-bold text-xl text-ratrova-gold mb-3 group-hover:text-ratrova-accent transition-colors">
-                        {service.name}
-                      </h4>
-                      <p className="text-ratrova-charcoal leading-relaxed">
-                        {service.description}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Dual Engine Model */}
-      <section className="section-padding">
-        <div className="luxury-container">
-          <div className="max-w-4xl mx-auto text-center mb-12">
-            <h2 className="heading-luxury text-4xl md:text-5xl mb-6">
-              Our <span className="text-gold-gradient">Service Tiers</span>
-            </h2>
-            <div className="gold-divider"></div>
-            <p className="text-lg text-ratrova-charcoal">
-              Two distinct service models designed for different business needs
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-            {/* Fast Cash Engine */}
-            <div className="card-luxury bg-gradient-to-br from-ratrova-white to-ratrova-beige/30">
-              <div className="text-center mb-6">
-                <div className="inline-block bg-ratrova-gold text-ratrova-white px-6 py-2 mb-4">
-                  <span className="font-cormorant font-bold text-xl tracking-wider">PAPER BOX</span>
-                </div>
-                <h3 className="heading-luxury text-3xl text-ratrova-black mb-2">
-                  Express Service
-                </h3>
-                <p className="text-ratrova-charcoal">Fast-turnaround packaging solutions</p>
-              </div>
-
-              <div className="space-y-4 text-ratrova-charcoal">
-                <div className="flex items-start space-x-3">
-                  <span className="text-ratrova-gold text-xl">✓</span>
-                  <span>48-72 hour delivery</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <span className="text-ratrova-gold text-xl">✓</span>
-                  <span>Custom burger boxes & food containers</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <span className="text-ratrova-gold text-xl">✓</span>
-                  <span>Retail packaging design</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <span className="text-ratrova-gold text-xl">✓</span>
-                  <span>Starting from ৳8,000</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <span className="text-ratrova-gold text-xl">✓</span>
-                  <span>Perfect for small businesses & startups</span>
-                </div>
-              </div>
-
-              <Link href="/survey" className="btn-primary w-full mt-8 text-center block">
-                Start Express Project
-              </Link>
-            </div>
-
-            {/* Premium Engine */}
-            <div className="card-luxury bg-gradient-to-br from-ratrova-black to-ratrova-charcoal text-ratrova-white">
-              <div className="text-center mb-6">
-                <div className="inline-block bg-ratrova-gold text-ratrova-white px-6 py-2 mb-4">
-                  <span className="font-cormorant font-bold text-xl tracking-wider">CREATIVE LABS</span>
-                </div>
-                <h3 className="font-cormorant font-bold text-3xl mb-2">
-                  Premium Experience
-                </h3>
-                <p className="text-ratrova-beige">Luxury brand positioning</p>
-              </div>
-
-              <div className="space-y-4 text-ratrova-beige">
-                <div className="flex items-start space-x-3">
-                  <span className="text-ratrova-gold text-xl">✓</span>
-                  <span>Complete brand identity systems</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <span className="text-ratrova-gold text-xl">✓</span>
-                  <span>Luxury packaging ecosystems</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <span className="text-ratrova-gold text-xl">✓</span>
-                  <span>Strategic brand consultancy</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <span className="text-ratrova-gold text-xl">✓</span>
-                  <span>Starting from ৳75,000</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <span className="text-ratrova-gold text-xl">✓</span>
-                  <span>For established brands seeking elevation</span>
-                </div>
-              </div>
-
-              <Link href="/survey" className="bg-ratrova-gold text-ratrova-white px-8 py-4 rounded-none font-inter font-medium tracking-wider uppercase transition-all duration-300 hover:bg-ratrova-accent hover:scale-105 w-full mt-8 text-center block">
-                Start Premium Project
-              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Process */}
-      <section className="section-padding bg-ratrova-black text-ratrova-white">
-        <div className="luxury-container">
-          <div className="max-w-4xl mx-auto text-center mb-16">
-            <h2 className="font-cormorant font-bold text-4xl md:text-5xl mb-6">
-              Our <span className="text-ratrova-gold">Process</span>
-            </h2>
-            <div className="gold-divider"></div>
-            <p className="text-xl text-ratrova-beige">
-              From initial consultation to final delivery
-            </p>
-          </div>
-
-          <div className="max-w-5xl mx-auto space-y-8">
-            {[
-              { step: '01', title: 'Discovery & Strategy', description: 'Deep dive into your brand, market, and objectives' },
-              { step: '02', title: 'Concept Development', description: 'Multiple design directions rooted in strategy' },
-              { step: '03', title: 'Refinement', description: 'Iterative improvements based on feedback' },
-              { step: '04', title: 'Finalization', description: 'Technical file preparation and quality assurance' },
-              { step: '05', title: 'Delivery & Support', description: 'Complete handover with production guidance' }
-            ].map((phase, index) => (
-              <div key={index} className="flex items-start space-x-6 card-luxury bg-ratrova-charcoal/50 border-ratrova-gold/30">
-                <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-ratrova-gold rounded-full flex items-center justify-center">
-                    <span className="font-cormorant font-bold text-2xl text-ratrova-white">
-                      {phase.step}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-cormorant font-bold text-2xl text-ratrova-gold mb-2">
-                    {phase.title}
-                  </h3>
-                  <p className="text-ratrova-beige">
-                    {phase.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="section-padding bg-gradient-to-br from-ratrova-gold to-ratrova-accent text-ratrova-white">
-        <div className="luxury-container text-center">
-          <h2 className="font-cormorant font-bold text-4xl md:text-5xl mb-6">
-            Ready to Elevate Your Brand?
+      {/* CTA Section */}
+      <section className="py-20" style={{ backgroundColor: '#050505', borderTop: '1px solid #1a1a1a' }}>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-6" style={{ color: '#FFFFFF' }}>
+            Ready to Build Your <span style={{ color: '#D4AF37' }}>Global Brand?</span>
           </h2>
-          <p className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto">
-            Share your packaging challenge and we'll contact you with a tailored suggestion
+          <p className="text-lg mb-10" style={{ color: '#888888' }}>
+            Whether you need physical packaging or strategic guidance, we're here to serve.
           </p>
-          <Link href="/survey" className="bg-ratrova-black text-ratrova-white px-12 py-5 rounded-none font-inter font-medium tracking-wider uppercase transition-all duration-300 hover:scale-105 inline-block">
-            Start Your Project
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center gap-3 px-10 py-5 text-lg font-bold uppercase tracking-wide transition-all duration-300 hover:scale-105"
+              style={{ backgroundColor: '#006A4E', color: '#FFFFFF', boxShadow: '0 0 40px rgba(0, 106, 78, 0.4)' }}
+            >
+              Book Consultation
+              <ArrowRightIcon />
+            </Link>
+            <a
+              href="/lesson-01.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-3 px-10 py-5 text-lg font-bold uppercase tracking-wide transition-all duration-300 hover:scale-105"
+              style={{ backgroundColor: 'transparent', color: '#D4AF37', border: '2px solid #D4AF37' }}
+            >
+              Get Free Lesson
+            </a>
+          </div>
         </div>
       </section>
     </div>

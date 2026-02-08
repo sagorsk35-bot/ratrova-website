@@ -15,6 +15,13 @@ module.exports = {
           'beige': '#D1C7BD',
           'white': '#E7E2DD',
           'accent': '#C9A961',
+        },
+        'rubel': {
+          'forest': '#006A4E',
+          'gold': '#D4AF37',
+          'white': '#FFFFFF',
+          'gray': '#F8F9FA',
+          'dark': '#1a1a2e',
         }
       },
       fontFamily: {

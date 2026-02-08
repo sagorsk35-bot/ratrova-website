@@ -3,11 +3,12 @@ import { ClerkProvider } from '@clerk/nextjs'
 import './globals.css'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import WhatsAppButton from '../components/WhatsAppButton'
 
 export const metadata = {
-  title: 'RATROVA | Bangladesh\'s First Luxury Packaging Design Agency',
-  description: 'Before form, there is meaning. Before beauty, there is belief. RATROVA is Bangladesh\'s premier luxury packaging design agency.',
-  keywords: 'packaging design bangladesh, luxury branding dhaka, brand identity, ratrova',
+  title: 'Mission 2030 | Building Bangladesh\'s Next Global Brands',
+  description: 'Vision 2030 Initiative by Sheikh Mohammad Sagor. 18 years of packaging mastery, 100% free knowledge. Export-quality packaging and brand strategy consulting.',
+  keywords: 'mission 2030, bangladesh packaging, brand strategy, export quality packaging, sheikh mohammad sagor, vision 2030',
 }
 
 export default function RootLayout({ children }) {
@@ -48,8 +49,10 @@ export default function RootLayout({ children }) {
             {children}
           </main>
           <Footer />
+          <WhatsAppButton />
         </body>
       </html>
     </ClerkProvider>
   )
 }
+
