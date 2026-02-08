@@ -58,10 +58,12 @@ export default function Home() {
   const [userImage, setUserImage] = useState(null)
   const [generatedBadge, setGeneratedBadge] = useState(null)
   const [isCanvasReady, setIsCanvasReady] = useState(false)
+  const [scale, setScale] = useState(1.5) // Zoom scale: 1 to 3
+  const [showThankYou, setShowThankYou] = useState(false)
   const canvasRef = useRef(null)
   const fileInputRef = useRef(null)
 
-  // Canvas Drawing Effect
+  // Canvas Drawing Effect with Zoom
   useEffect(() => {
     if (!canvasRef.current || !userImage) return
 
@@ -75,23 +77,29 @@ export default function Home() {
     const img = new Image()
     img.crossOrigin = 'anonymous'
     img.onload = () => {
+      // Clear canvas
+      ctx.clearRect(0, 0, size, size)
+
+      // Calculate scaled dimensions (user can zoom in/out)
       const imgRatio = img.width / img.height
-      let drawWidth, drawHeight, offsetX, offsetY
+      let drawWidth, drawHeight
 
       if (imgRatio > 1) {
-        drawHeight = size
-        drawWidth = size * imgRatio
-        offsetX = -(drawWidth - size) / 2
-        offsetY = 0
+        drawHeight = size * scale
+        drawWidth = drawHeight * imgRatio
       } else {
-        drawWidth = size
-        drawHeight = size / imgRatio
-        offsetX = 0
-        offsetY = -(drawHeight - size) / 2
+        drawWidth = size * scale
+        drawHeight = drawWidth / imgRatio
       }
 
+      // Center the scaled image
+      const offsetX = (size - drawWidth) / 2
+      const offsetY = (size - drawHeight) / 2
+
+      // Layer 1: User Image (Bottom, Scaled & Centered)
       ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight)
 
+      // Layer 2: Badge Overlay (Top)
       const badge = new Image()
       badge.crossOrigin = 'anonymous'
       badge.onload = () => {
@@ -108,7 +116,7 @@ export default function Home() {
         : '/badges/badge-business.png'
     }
     img.src = userImage
-  }, [userImage, selectedBadge])
+  }, [userImage, selectedBadge, scale])
 
   const handleImageUpload = (e) => {
     const file = e.target.files?.[0]
@@ -118,6 +126,7 @@ export default function Home() {
         setUserImage(event.target?.result)
         setIsCanvasReady(false)
         setGeneratedBadge(null)
+        setScale(1.5) // Reset zoom on new upload
       }
       reader.readAsDataURL(file)
     }
@@ -129,6 +138,8 @@ export default function Home() {
     link.download = 'Mission2030-Badge.png'
     link.href = generatedBadge
     link.click()
+    // Show celebration modal
+    setShowThankYou(true)
   }
 
   const calendarDays = Array.from({ length: 14 }, (_, i) => {
@@ -289,11 +300,67 @@ export default function Home() {
               )}
             </div>
 
+            {/* Zoom Slider - Only show when image is uploaded */}
+            {userImage && (
+              <div className="mt-8 max-w-sm mx-auto">
+                <label className="block text-center text-sm mb-3" style={{ color: '#888888' }}>
+                  Zoom: {Math.round(scale * 100)}%
+                </label>
+                <input
+                  type="range"
+                  min="1"
+                  max="3"
+                  step="0.1"
+                  value={scale}
+                  onChange={(e) => setScale(parseFloat(e.target.value))}
+                  className="w-full h-2 rounded-lg appearance-none cursor-pointer"
+                  style={{
+                    background: `linear-gradient(to right, #D4AF37 0%, #D4AF37 ${((scale - 1) / 2) * 100}%, #333333 ${((scale - 1) / 2) * 100}%, #333333 100%)`,
+                    accentColor: '#D4AF37'
+                  }}
+                />
+                <div className="flex justify-between text-xs mt-1" style={{ color: '#555555' }}>
+                  <span>Zoom Out</span>
+                  <span>Zoom In</span>
+                </div>
+              </div>
+            )}
+
             <p className="text-center mt-8 text-sm" style={{ color: '#555555' }}>
               📱 Share on Facebook, LinkedIn, WhatsApp with <span style={{ color: '#D4AF37' }}>#Mission2030</span>
             </p>
           </div>
         </div>
+
+        {/* THANK YOU MODAL */}
+        {showThankYou && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div
+              className="absolute inset-0 backdrop-blur-sm"
+              style={{ backgroundColor: 'rgba(0, 0, 0, 0.90)' }}
+              onClick={() => setShowThankYou(false)}
+            ></div>
+            <div
+              className="relative w-full max-w-md p-10 text-center shadow-2xl"
+              style={{ backgroundColor: '#0A0A0A', border: '2px solid #D4AF37', boxShadow: '0 0 100px rgba(212, 175, 55, 0.3)' }}
+            >
+              <div className="text-6xl mb-6">🇧🇩</div>
+              <h3 className="text-3xl font-bold mb-4" style={{ color: '#D4AF37' }}>
+                You are a Nation Builder!
+              </h3>
+              <p className="text-lg mb-8" style={{ color: '#888888' }}>
+                Post this on Facebook with <span style={{ color: '#FFFFFF', fontWeight: 'bold' }}>#Vision2030</span>
+              </p>
+              <button
+                onClick={() => setShowThankYou(false)}
+                className="px-10 py-4 font-bold uppercase tracking-wide transition-all duration-300 hover:scale-105"
+                style={{ backgroundColor: '#006A4E', color: '#FFFFFF' }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* SERVICES SECTION */}
