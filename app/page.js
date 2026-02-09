@@ -59,6 +59,8 @@ export default function Home() {
   const [generatedBadge, setGeneratedBadge] = useState(null)
   const [isCanvasReady, setIsCanvasReady] = useState(false)
   const [scale, setScale] = useState(1.5) // Zoom scale: 1 to 3
+  const [positionX, setPositionX] = useState(0) // Horizontal position: -100 to 100
+  const [positionY, setPositionY] = useState(0) // Vertical position: -100 to 100
   const [showThankYou, setShowThankYou] = useState(false)
   const canvasRef = useRef(null)
   const fileInputRef = useRef(null)
@@ -92,12 +94,16 @@ export default function Home() {
         drawHeight = drawWidth / imgRatio
       }
 
-      // Center the scaled image
-      const offsetX = (size - drawWidth) / 2
-      const offsetY = (size - drawHeight) / 2
+      // Center the scaled image with user position adjustments
+      const baseOffsetX = (size - drawWidth) / 2
+      const baseOffsetY = (size - drawHeight) / 2
 
-      // Layer 1: User Image (Bottom, Scaled & Centered)
-      ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight)
+      // Apply user position adjustments (positionX/Y range: -100 to 100, maps to -50 to 50 pixels)
+      const adjustedOffsetX = baseOffsetX + (positionX * 0.5)
+      const adjustedOffsetY = baseOffsetY + (positionY * 0.5)
+
+      // Layer 1: User Image (Bottom, Scaled & Centered with adjustments)
+      ctx.drawImage(img, adjustedOffsetX, adjustedOffsetY, drawWidth, drawHeight)
 
       // Layer 2: Badge Overlay (Top)
       const badge = new Image()
@@ -116,7 +122,7 @@ export default function Home() {
         : '/Badges/badge-business.png'
     }
     img.src = userImage
-  }, [userImage, selectedBadge, scale])
+  }, [userImage, selectedBadge, scale, positionX, positionY])
 
   const handleImageUpload = (e) => {
     const file = e.target.files?.[0]
@@ -127,6 +133,8 @@ export default function Home() {
         setIsCanvasReady(false)
         setGeneratedBadge(null)
         setScale(1.5) // Reset zoom on new upload
+        setPositionX(0) // Reset horizontal position
+        setPositionY(0) // Reset vertical position
       }
       reader.readAsDataURL(file)
     }
@@ -300,26 +308,77 @@ export default function Home() {
 
             {/* Zoom Slider - Only show when image is uploaded */}
             {userImage && (
-              <div className="mt-8 max-w-sm mx-auto">
-                <label className="block text-center text-sm mb-3" style={{ color: '#888888' }}>
-                  Zoom: {Math.round(scale * 100)}%
-                </label>
-                <input
-                  type="range"
-                  min="1"
-                  max="3"
-                  step="0.1"
-                  value={scale}
-                  onChange={(e) => setScale(parseFloat(e.target.value))}
-                  className="w-full h-2 rounded-lg appearance-none cursor-pointer"
-                  style={{
-                    background: `linear-gradient(to right, #D4AF37 0%, #D4AF37 ${((scale - 1) / 2) * 100}%, #333333 ${((scale - 1) / 2) * 100}%, #333333 100%)`,
-                    accentColor: '#D4AF37'
-                  }}
-                />
-                <div className="flex justify-between text-xs mt-1" style={{ color: '#555555' }}>
-                  <span>Zoom Out</span>
-                  <span>Zoom In</span>
+              <div className="mt-8 max-w-md mx-auto space-y-6">
+                {/* Zoom Control */}
+                <div>
+                  <label className="block text-center text-sm mb-3" style={{ color: '#888888' }}>
+                    Zoom: {Math.round(scale * 100)}%
+                  </label>
+                  <input
+                    type="range"
+                    min="1"
+                    max="3"
+                    step="0.1"
+                    value={scale}
+                    onChange={(e) => setScale(parseFloat(e.target.value))}
+                    className="w-full h-2 rounded-lg appearance-none cursor-pointer"
+                    style={{
+                      background: `linear-gradient(to right, #D4AF37 0%, #D4AF37 ${((scale - 1) / 2) * 100}%, #333333 ${((scale - 1) / 2) * 100}%, #333333 100%)`,
+                      accentColor: '#D4AF37'
+                    }}
+                  />
+                  <div className="flex justify-between text-xs mt-1" style={{ color: '#555555' }}>
+                    <span>Zoom Out</span>
+                    <span>Zoom In</span>
+                  </div>
+                </div>
+
+                {/* Horizontal Position Control */}
+                <div>
+                  <label className="block text-center text-sm mb-3" style={{ color: '#888888' }}>
+                    ↔ Position: {positionX > 0 ? `Right ${positionX}` : positionX < 0 ? `Left ${Math.abs(positionX)}` : 'Center'}
+                  </label>
+                  <input
+                    type="range"
+                    min="-100"
+                    max="100"
+                    step="5"
+                    value={positionX}
+                    onChange={(e) => setPositionX(parseInt(e.target.value))}
+                    className="w-full h-2 rounded-lg appearance-none cursor-pointer"
+                    style={{
+                      background: `linear-gradient(to right, #333333 0%, #333333 ${(positionX + 100) / 2}%, #006A4E ${(positionX + 100) / 2}%, #333333 100%)`,
+                      accentColor: '#006A4E'
+                    }}
+                  />
+                  <div className="flex justify-between text-xs mt-1" style={{ color: '#555555' }}>
+                    <span>← Left</span>
+                    <span>Right →</span>
+                  </div>
+                </div>
+
+                {/* Vertical Position Control */}
+                <div>
+                  <label className="block text-center text-sm mb-3" style={{ color: '#888888' }}>
+                    ↕ Position: {positionY > 0 ? `Down ${positionY}` : positionY < 0 ? `Up ${Math.abs(positionY)}` : 'Center'}
+                  </label>
+                  <input
+                    type="range"
+                    min="-100"
+                    max="100"
+                    step="5"
+                    value={positionY}
+                    onChange={(e) => setPositionY(parseInt(e.target.value))}
+                    className="w-full h-2 rounded-lg appearance-none cursor-pointer"
+                    style={{
+                      background: `linear-gradient(to right, #333333 0%, #333333 ${(positionY + 100) / 2}%, #006A4E ${(positionY + 100) / 2}%, #333333 100%)`,
+                      accentColor: '#006A4E'
+                    }}
+                  />
+                  <div className="flex justify-between text-xs mt-1" style={{ color: '#555555' }}>
+                    <span>↑ Up</span>
+                    <span>Down ↓</span>
+                  </div>
                 </div>
               </div>
             )}
