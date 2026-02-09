@@ -1,4 +1,5 @@
-// Authentication enabled - protecting /survey route
+// Authentication enabled - protecting /survey and /lessons routes
+// Social login (Google + Facebook) configured in Clerk Dashboard
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 
 const isPublicRoute = createRouteMatcher([
@@ -8,8 +9,12 @@ const isPublicRoute = createRouteMatcher([
     '/portfolio(.*)',
     '/contact(.*)',
     '/sign-in(.*)',
-    '/sign-up(.*)'
+    '/sign-up(.*)',
+    '/privacy-policy(.*)',
+    '/refund-policy(.*)',
+    '/terms(.*)'
 ])
+// Protected routes: /lessons, /survey (require login)
 
 export default clerkMiddleware(async (auth, req) => {
     if (!isPublicRoute(req)) {

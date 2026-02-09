@@ -182,9 +182,7 @@ export default function Home() {
               </p>
 
               <a
-                href="/lesson-01.html"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/lessons"
                 className="inline-flex items-center gap-3 px-10 py-5 text-lg font-bold tracking-wide uppercase transition-all duration-300 hover:scale-105"
                 style={{
                   backgroundColor: '#006A4E',
@@ -199,7 +197,7 @@ export default function Home() {
               <div className="flex items-center gap-6 mt-10">
                 <div className="flex items-center gap-2" style={{ color: '#666666' }}>
                   <span style={{ color: '#006A4E' }}><CheckIcon /></span>
-                  <span className="text-sm">No Sign-up Required</span>
+                  <span className="text-sm">Free with Login</span>
                 </div>
                 <div className="flex items-center gap-2" style={{ color: '#666666' }}>
                   <span style={{ color: '#D4AF37' }}><AwardIcon /></span>
@@ -226,7 +224,7 @@ export default function Home() {
       </section>
 
       {/* BADGE GENERATOR SECTION */}
-      <section className="py-20 sm:py-28" style={{ backgroundColor: '#0A0A0A' }}>
+      <section id="badge-generator" className="py-20 sm:py-28" style={{ backgroundColor: '#0A0A0A' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <div className="w-20 h-[2px] mx-auto mb-8" style={{ backgroundColor: '#D4AF37' }}></div>
@@ -332,7 +330,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* THANK YOU MODAL */}
+        {/* THANK YOU MODAL - Enhanced with Both Badge Options */}
         {showThankYou && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div
@@ -341,23 +339,93 @@ export default function Home() {
               onClick={() => setShowThankYou(false)}
             ></div>
             <div
-              className="relative w-full max-w-md p-10 text-center shadow-2xl"
+              className="relative w-full max-w-2xl p-8 sm:p-10 text-center shadow-2xl overflow-y-auto max-h-[90vh]"
               style={{ backgroundColor: '#0A0A0A', border: '2px solid #D4AF37', boxShadow: '0 0 100px rgba(212, 175, 55, 0.3)' }}
             >
-              <div className="text-6xl mb-6">🇧🇩</div>
-              <h3 className="text-3xl font-bold mb-4" style={{ color: '#D4AF37' }}>
-                You are a Nation Builder!
-              </h3>
-              <p className="text-lg mb-8" style={{ color: '#888888' }}>
-                Post this on Facebook with <span style={{ color: '#FFFFFF', fontWeight: 'bold' }}>#Vision2030</span>
-              </p>
+              {/* Close Button */}
               <button
                 onClick={() => setShowThankYou(false)}
-                className="px-10 py-4 font-bold uppercase tracking-wide transition-all duration-300 hover:scale-105"
-                style={{ backgroundColor: '#006A4E', color: '#FFFFFF' }}
+                className="absolute top-4 right-4 p-2 transition-colors hover:opacity-80"
+                style={{ color: '#888888' }}
               >
-                Close
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
+
+              <div className="text-6xl mb-4">🇧🇩</div>
+              <h3 className="text-3xl font-bold mb-2" style={{ color: '#D4AF37' }}>
+                You are a Nation Builder!
+              </h3>
+              <p className="text-base mb-8" style={{ color: '#888888' }}>
+                Share on social media with <span style={{ color: '#FFFFFF', fontWeight: 'bold' }}>#Mission2030</span>
+              </p>
+
+              {/* Badge Showcase */}
+              <div className="mb-8">
+                <h4 className="text-lg font-bold mb-6" style={{ color: '#FFFFFF' }}>
+                  🏆 Your Two Mission 2030 Badges
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Patriot Builder Badge */}
+                  <div
+                    className="p-4 cursor-pointer transition-all duration-300 hover:scale-105"
+                    style={{
+                      backgroundColor: selectedBadge === 'patriot' ? 'rgba(212, 175, 55, 0.1)' : '#111111',
+                      border: selectedBadge === 'patriot' ? '2px solid #D4AF37' : '1px solid #333333'
+                    }}
+                    onClick={() => setSelectedBadge('patriot')}
+                  >
+                    <div className="aspect-square mb-3 overflow-hidden flex items-center justify-center" style={{ backgroundColor: '#0A0A0A' }}>
+                      <img src="/Badges/badge-patriot.png" alt="Patriot Builder" className="w-full h-full object-contain" />
+                    </div>
+                    <p className="font-bold text-sm" style={{ color: '#D4AF37' }}>Patriot Builder</p>
+                    <p className="text-xs" style={{ color: '#666666' }}>For Nation Builders</p>
+                  </div>
+
+                  {/* Future Global Brand Badge */}
+                  <div
+                    className="p-4 cursor-pointer transition-all duration-300 hover:scale-105"
+                    style={{
+                      backgroundColor: selectedBadge === 'business' ? 'rgba(0, 106, 78, 0.1)' : '#111111',
+                      border: selectedBadge === 'business' ? '2px solid #006A4E' : '1px solid #333333'
+                    }}
+                    onClick={() => setSelectedBadge('business')}
+                  >
+                    <div className="aspect-square mb-3 overflow-hidden flex items-center justify-center" style={{ backgroundColor: '#0A0A0A' }}>
+                      <img src="/Badges/badge-business.png" alt="Future Global Brand" className="w-full h-full object-contain" />
+                    </div>
+                    <p className="font-bold text-sm" style={{ color: '#006A4E' }}>Future Global Brand</p>
+                    <p className="text-xs" style={{ color: '#666666' }}>For Business Leaders</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  onClick={() => {
+                    setShowThankYou(false)
+                    // Scroll to badge generator
+                    document.querySelector('#badge-generator')?.scrollIntoView({ behavior: 'smooth' })
+                  }}
+                  className="px-8 py-4 font-bold uppercase tracking-wide transition-all duration-300 hover:scale-105"
+                  style={{ backgroundColor: '#D4AF37', color: '#050505' }}
+                >
+                  Create Another Badge
+                </button>
+                <button
+                  onClick={() => setShowThankYou(false)}
+                  className="px-8 py-4 font-bold uppercase tracking-wide transition-all duration-300 hover:scale-105"
+                  style={{ backgroundColor: 'transparent', color: '#888888', border: '1px solid #333333' }}
+                >
+                  Close
+                </button>
+              </div>
+
+              <p className="mt-6 text-sm" style={{ color: '#555555' }}>
+                📱 Tag us <span style={{ color: '#D4AF37' }}>@mission2030bd</span> on Facebook & LinkedIn
+              </p>
             </div>
           </div>
         )}
