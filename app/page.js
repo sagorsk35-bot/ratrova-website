@@ -112,8 +112,8 @@ export default function Home() {
         setIsCanvasReady(true)
       }
       badge.src = selectedBadge === 'patriot'
-        ? '/badges/badge-patriot.png'
-        : '/badges/badge-business.png'
+        ? '/Badges/badge-patriot.png'
+        : '/Badges/badge-business.png'
     }
     img.src = userImage
   }, [userImage, selectedBadge, scale])
