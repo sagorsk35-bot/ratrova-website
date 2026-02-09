@@ -1,0 +1,76 @@
+/* Content Protection CSS for Lesson Pages
+ * Prevents easy copying, screenshots, and content theft
+ */
+
+/* Disable text selection */
+.content-protected {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+}
+
+/* Disable image dragging */
+.content-protected img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    pointer-events: none;
+}
+
+/* Hide content in print mode */
+@media print {
+
+    .content-protected,
+    .content-protected * {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    body::before {
+        content: 'This content is protected and cannot be printed.';
+        display: block;
+        text-align: center;
+        padding: 50px;
+        font-size: 24px;
+        color: #D4AF37;
+        background: #050505;
+    }
+}
+
+/* Disable context menu styling hint */
+.content-protected * {
+    -webkit-touch-callout: none !important;
+}
+
+/* Blur content when window loses focus (screenshot prevention) */
+.content-protected.window-blur {
+    filter: blur(20px);
+    transition: filter 0.3s ease;
+}
+
+/* Watermark overlay (optional - add via JS) */
+.content-watermark {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    background: repeating-linear-gradient(45deg,
+            transparent,
+            transparent 100px,
+            rgba(212, 175, 55, 0.03) 100px,
+            rgba(212, 175, 55, 0.03) 200px);
+}
+
+/* Video protection */
+.content-protected video {
+    pointer-events: none;
+}
+
+.content-protected video::-webkit-media-controls-enclosure {
+    pointer-events: auto;
+}

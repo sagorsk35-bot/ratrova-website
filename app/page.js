@@ -62,12 +62,39 @@ export default function Home() {
   const [positionX, setPositionX] = useState(0) // Horizontal position: -100 to 100
   const [positionY, setPositionY] = useState(0) // Vertical position: -100 to 100
   const [showThankYou, setShowThankYou] = useState(false)
+  const [isBadgeLoading, setIsBadgeLoading] = useState(false) // Loading state for badge
+  const [badgesPreloaded, setBadgesPreloaded] = useState(false) // Preloading state
   const canvasRef = useRef(null)
+  const preloadedBadges = useRef({}) // Cache preloaded badge images
   const fileInputRef = useRef(null)
+
+  // Preload badge images on component mount for instant display
+  useEffect(() => {
+    const preloadBadges = async () => {
+      const badgePaths = [
+        '/Badges/badge-patriot.png',
+        '/Badges/badge-business.png'
+      ]
+
+      for (const path of badgePaths) {
+        const img = new Image()
+        img.crossOrigin = 'anonymous'
+        img.src = path
+        await new Promise((resolve) => {
+          img.onload = resolve
+          img.onerror = resolve
+        })
+        preloadedBadges.current[path] = img
+      }
+      setBadgesPreloaded(true)
+    }
+    preloadBadges()
+  }, [])
 
   // Canvas Drawing Effect with Zoom
   useEffect(() => {
     if (!canvasRef.current || !userImage) return
+    setIsBadgeLoading(true) // Start loading
 
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
@@ -105,21 +132,33 @@ export default function Home() {
       // Layer 1: User Image (Bottom, Scaled & Centered with adjustments)
       ctx.drawImage(img, adjustedOffsetX, adjustedOffsetY, drawWidth, drawHeight)
 
-      // Layer 2: Badge Overlay (Top)
-      const badge = new Image()
-      badge.crossOrigin = 'anonymous'
-      badge.onload = () => {
-        ctx.drawImage(badge, 0, 0, size, size)
-        setGeneratedBadge(canvas.toDataURL('image/png'))
-        setIsCanvasReady(true)
-      }
-      badge.onerror = () => {
-        setGeneratedBadge(canvas.toDataURL('image/png'))
-        setIsCanvasReady(true)
-      }
-      badge.src = selectedBadge === 'patriot'
+      // Layer 2: Badge Overlay (Top) - Use preloaded badge if available
+      const badgeSrc = selectedBadge === 'patriot'
         ? '/Badges/badge-patriot.png'
         : '/Badges/badge-business.png'
+
+      const drawBadge = (badgeImg) => {
+        ctx.drawImage(badgeImg, 0, 0, size, size)
+        setGeneratedBadge(canvas.toDataURL('image/png'))
+        setIsCanvasReady(true)
+        setIsBadgeLoading(false) // Stop loading
+      }
+
+      // Check if badge is preloaded
+      if (preloadedBadges.current[badgeSrc] && preloadedBadges.current[badgeSrc].complete) {
+        drawBadge(preloadedBadges.current[badgeSrc])
+      } else {
+        // Fallback to loading if not preloaded
+        const badge = new Image()
+        badge.crossOrigin = 'anonymous'
+        badge.onload = () => drawBadge(badge)
+        badge.onerror = () => {
+          setGeneratedBadge(canvas.toDataURL('image/png'))
+          setIsCanvasReady(true)
+          setIsBadgeLoading(false)
+        }
+        badge.src = badgeSrc
+      }
     }
     img.src = userImage
   }, [userImage, selectedBadge, scale, positionX, positionY])
@@ -271,14 +310,27 @@ export default function Home() {
             </div>
 
             <div className="flex justify-center mb-8">
-              <div className="w-full max-w-[500px] aspect-square flex items-center justify-center overflow-hidden" style={{ backgroundColor: '#111111', border: '2px dashed #333333' }}>
+              <div className="w-full max-w-[500px] aspect-square flex items-center justify-center overflow-hidden relative" style={{ backgroundColor: '#111111', border: '2px dashed #333333' }}>
                 {!userImage ? (
                   <div className="text-center p-8">
                     <UploadIcon />
                     <p className="text-base mt-4" style={{ color: '#555555' }}>Upload your photo to generate badge</p>
+                    {!badgesPreloaded && (
+                      <p className="text-xs mt-2" style={{ color: '#D4AF37' }}>Loading badge frames...</p>
+                    )}
                   </div>
                 ) : (
-                  <canvas ref={canvasRef} className="w-full h-full" style={{ maxWidth: '500px', maxHeight: '500px' }} />
+                  <>
+                    <canvas ref={canvasRef} className="w-full h-full" style={{ maxWidth: '500px', maxHeight: '500px' }} />
+                    {isBadgeLoading && (
+                      <div className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}>
+                        <div className="text-center">
+                          <div className="w-12 h-12 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4" style={{ borderColor: '#D4AF37', borderTopColor: 'transparent' }}></div>
+                          <p className="text-sm" style={{ color: '#D4AF37' }}>Generating badge...</p>
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </div>
