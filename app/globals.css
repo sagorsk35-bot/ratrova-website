@@ -4,6 +4,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import Design System */
+@import './design-system.css';
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -108,10 +111,12 @@
     transform: translate(0, 0) scale(1);
     opacity: 0.1;
   }
+
   50% {
     transform: translate(20px, 10px) scale(1.1);
     opacity: 0.25;
   }
+
   100% {
     transform: translate(-10px, 20px) scale(1);
     opacity: 0.15;

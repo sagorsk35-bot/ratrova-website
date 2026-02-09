@@ -1,5 +1,7 @@
 // ClerkProvider enabled - authentication active
 import { ClerkProvider } from '@clerk/nextjs'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
@@ -9,6 +11,35 @@ export const metadata = {
   title: 'Mission 2030 | Building Bangladesh\'s Next Global Brands',
   description: 'Vision 2030 Initiative by Sheikh Mohammad Sagor. 18 years of packaging mastery, 100% free knowledge. Export-quality packaging and brand strategy consulting.',
   keywords: 'mission 2030, bangladesh packaging, brand strategy, export quality packaging, sheikh mohammad sagor, vision 2030',
+  openGraph: {
+    title: 'Mission 2030 | Building Bangladesh\'s Next Global Brands',
+    description: 'Vision 2030 Initiative - 18 years of packaging mastery, 100% free knowledge.',
+    url: 'https://ratrova.com',
+    siteName: 'Mission 2030',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Mission 2030 | Building Bangladesh\'s Next Global Brands',
+    description: 'Vision 2030 Initiative - 18 years of packaging mastery.',
+    images: ['/og-image.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
 }
 
 export default function RootLayout({ children }) {
@@ -17,6 +48,7 @@ export default function RootLayout({ children }) {
       <html lang="en" className="scroll-smooth">
         <head>
           <link rel="icon" href="/favicon.ico" />
+          <link rel="canonical" href="https://ratrova.com" />
           {/* Meta Pixel Code */}
           <script
             dangerouslySetInnerHTML={{
@@ -50,9 +82,10 @@ export default function RootLayout({ children }) {
           </main>
           <Footer />
           <WhatsAppButton />
+          <Analytics />
+          <SpeedInsights />
         </body>
       </html>
     </ClerkProvider>
   )
 }
-

@@ -1,0 +1,333 @@
+/* ===========================================
+   RATROVA DESIGN SYSTEM - CSS Variables
+   Mission 2030 Brand Guidelines
+   =========================================== */
+
+:root {
+    /* Brand Colors */
+    --color-gold: #D4AF37;
+    --color-gold-light: rgba(212, 175, 55, 0.1);
+    --color-gold-border: rgba(212, 175, 55, 0.3);
+    --color-green: #006A4E;
+    --color-green-light: rgba(0, 106, 78, 0.2);
+    --color-green-glow: rgba(0, 106, 78, 0.4);
+
+    /* Neutral Colors */
+    --color-black: #050505;
+    --color-dark: #0A0A0A;
+    --color-gray-dark: #111111;
+    --color-gray: #222222;
+    --color-gray-medium: #333333;
+    --color-gray-light: #555555;
+    --color-gray-text: #888888;
+    --color-white: #FFFFFF;
+
+    /* Shadows */
+    --shadow-gold: 0 0 40px rgba(212, 175, 55, 0.2);
+    --shadow-green: 0 0 30px rgba(0, 106, 78, 0.4);
+    --shadow-large-gold: 0 0 60px rgba(212, 175, 55, 0.3);
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.3s ease;
+    --transition-slow: 0.5s ease;
+
+    /* Borders */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-full: 9999px;
+}
+
+/* ===========================================
+   REUSABLE COMPONENT CLASSES
+   =========================================== */
+
+/* Primary Button - Gold */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background-color: var(--color-gold);
+    color: var(--color-black);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all var(--transition-medium);
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-gold);
+}
+
+/* Secondary Button - Green */
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background-color: var(--color-green);
+    color: var(--color-white);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all var(--transition-medium);
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--shadow-green);
+}
+
+.btn-secondary:hover {
+    transform: scale(1.05);
+}
+
+/* Outline Button */
+.btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background-color: transparent;
+    color: var(--color-gold);
+    border: 2px solid var(--color-gold);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all var(--transition-medium);
+    cursor: pointer;
+}
+
+.btn-outline:hover {
+    transform: scale(1.05);
+    background-color: var(--color-gold);
+    color: var(--color-black);
+}
+
+/* Disabled Button */
+.btn-disabled {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background-color: #1A1A1A;
+    color: var(--color-gray-light);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: not-allowed;
+    border: none;
+}
+
+/* ===========================================
+   CARD COMPONENTS
+   =========================================== */
+
+.card {
+    background-color: var(--color-dark);
+    border: 1px solid var(--color-gray);
+    padding: 1.5rem;
+    transition: all var(--transition-medium);
+}
+
+.card-highlighted {
+    background-color: var(--color-dark);
+    border: 2px solid var(--color-gold);
+    padding: 1.5rem;
+}
+
+.card-success {
+    background-color: var(--color-dark);
+    border: 2px solid var(--color-green);
+    padding: 1.5rem;
+}
+
+/* ===========================================
+   BADGE & TAG COMPONENTS
+   =========================================== */
+
+.badge-gold {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--color-gold-light);
+    border: 1px solid var(--color-gold-border);
+    color: var(--color-gold);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.badge-gray {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background-color: rgba(136, 136, 136, 0.2);
+    color: var(--color-gray-text);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.badge-green {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background-color: var(--color-green-light);
+    color: var(--color-green);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* ===========================================
+   LOADING SPINNER
+   =========================================== */
+
+.spinner {
+    width: 3rem;
+    height: 3rem;
+    border: 4px solid var(--color-gold);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.spinner-sm {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-width: 2px;
+}
+
+.spinner-lg {
+    width: 4rem;
+    height: 4rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ===========================================
+   FORM INPUTS
+   =========================================== */
+
+.input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: var(--color-gray-dark);
+    border: 1px solid var(--color-gray);
+    color: var(--color-white);
+    font-size: 1rem;
+    transition: border-color var(--transition-fast);
+}
+
+.input:focus {
+    outline: none;
+    border-color: var(--color-gold);
+}
+
+.input::placeholder {
+    color: var(--color-gray-light);
+}
+
+.label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color-gray-text);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* ===========================================
+   SECTION CONTAINERS
+   =========================================== */
+
+.section-dark {
+    background-color: var(--color-black);
+    padding: 5rem 0;
+}
+
+.section-darker {
+    background-color: var(--color-dark);
+    padding: 5rem 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* ===========================================
+   TYPOGRAPHY UTILITIES
+   =========================================== */
+
+.text-gold {
+    color: var(--color-gold);
+}
+
+.text-green {
+    color: var(--color-green);
+}
+
+.text-gray {
+    color: var(--color-gray-text);
+}
+
+.text-white {
+    color: var(--color-white);
+}
+
+.heading-xl {
+    font-size: 3.75rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.heading-lg {
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.heading-md {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+/* ===========================================
+   ANIMATION UTILITIES
+   =========================================== */
+
+.hover-scale {
+    transition: transform var(--transition-medium);
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

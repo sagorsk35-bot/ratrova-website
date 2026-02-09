@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Disallow admin/internal routes
+Disallow: /api/
+Disallow: /_next/
+Disallow: /sign-in
+Disallow: /sign-up
+
+# Sitemap location
+Sitemap: https://ratrova.com/sitemap.xml
+
+# Crawl delay (be nice to servers)
+Crawl-delay: 1
