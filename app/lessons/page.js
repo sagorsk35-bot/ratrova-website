@@ -50,7 +50,6 @@ const lessons = [
         title: 'Lesson 01: Foundation of Export-Quality Packaging',
         description: 'Master the fundamentals of packaging that meets international standards. Learn about materials, structural design, and compliance requirements.',
         file: '/lesson-01.html',
-        duration: '45 mins',
         status: 'available'
     },
     {
@@ -58,7 +57,6 @@ const lessons = [
         title: 'Lesson 02: Brand DNA & Visual Identity',
         description: 'Discover how world-class brands create memorable packaging. Color psychology, typography, and visual hierarchy.',
         file: null,
-        duration: '60 mins',
         status: 'coming_soon'
     },
     {
@@ -66,7 +64,6 @@ const lessons = [
         title: 'Lesson 03: Production-Ready Dielines',
         description: 'From concept to production - learn to create dielines that manufacturers love.',
         file: null,
-        duration: '50 mins',
         status: 'coming_soon'
     }
 ]
@@ -338,7 +335,6 @@ export default function LessonsPage() {
                                             )}
                                         </div>
                                         <p className="mb-3" style={{ color: '#888888' }}>{lesson.description}</p>
-                                        <span className="text-sm" style={{ color: '#555555' }}>⏱️ {lesson.duration}</span>
                                     </div>
 
                                     {/* Action Buttons */}
