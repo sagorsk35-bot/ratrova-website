@@ -14,6 +14,7 @@ export default function Page() {
                         footerActionLink: "text-ratrova-gold hover:text-ratrova-accent"
                     }
                 }}
+                forceRedirectUrl="/onboarding"
             />
         </div>
     )

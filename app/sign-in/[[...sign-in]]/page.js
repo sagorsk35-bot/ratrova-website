@@ -42,7 +42,7 @@ export default function Page() {
                             footer: "hidden"
                         }
                     }}
-                    forceRedirectUrl="/lessons"
+                    forceRedirectUrl="/onboarding"
                 />
 
                 {/* Footer Note */}
