@@ -8,9 +8,9 @@ import Footer from '../components/Footer'
 import WhatsAppButton from '../components/WhatsAppButton'
 
 export const metadata = {
-  title: 'Mission 2030 | Building Bangladesh\'s Next Global Brands',
-  description: 'Vision 2030 Initiative by Sheikh Mohammad Sagor. 18 years of packaging mastery, 100% free knowledge. Export-quality packaging and brand strategy consulting.',
-  keywords: 'mission 2030, bangladesh packaging, brand strategy, export quality packaging, sheikh mohammad sagor, vision 2030',
+  title: 'Ratrova | Export-Quality Packaging & Mission 2030 Sponsor',
+  description: 'Ratrova is Bangladesh\'s leading Packaging Company and proud sponsor of Mission 2030. We turn generic products into global brands.',
+  keywords: 'Packaging Company, Ratrova, Mission 2030, Export Quality, branding, sheikh mohammad sagor',
   openGraph: {
     title: 'Mission 2030 | Building Bangladesh\'s Next Global Brands',
     description: 'Vision 2030 Initiative - 18 years of packaging mastery, 100% free knowledge.',
